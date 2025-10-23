@@ -1,6 +1,7 @@
 {
   "extends":"../tsconfig.json",
   "compilerOptions": {
+    "isolatedModules": true,
     "target": "ES2019",
     "declaration" :false,
     "baseUrl": ".",
@@ -13,6 +14,6 @@
       ]
     }
   },
-  "include": ["./*.ts","../*.ts", "../DataAccess/*.ts"],
-  "exclude": ["node_modules", "declarations", "dist"]
+  "include": ["**/*.ts"],
+  "exclude": ["**/NFT-SS2-*", "**/*.d.ts", "node_modules"]
 }
