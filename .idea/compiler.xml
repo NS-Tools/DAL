@@ -4,5 +4,6 @@
     <option name="enableServiceForProjectsWithoutConfig" value="false" />
     <option name="nodeInterpreterTextField" value="node" />
     <option name="recompileOnChanges" value="true" />
+    <option name="useTypesFromServer" value="true" />
   </component>
 </project>

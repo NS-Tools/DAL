@@ -25,7 +25,7 @@ see `package-lock.json` for exactly which versions of the above libraries are in
 
 See API [docs here](https://exploreconsulting.github.io/netsuite-fasttrack-toolkit-ss2)
 
-![NFT Intro Image](media/images/NFT8.0.0.png)
+![NFT Intro Image](media/images/NFT.png)
 
 # Getting Started (Typescript)
 
@@ -359,7 +359,7 @@ but much richer logging facility than the NetSuite provided logger.
 Automatically log entry and exit of methods with rich options by adding a line like this to the end of your script:
 
 ```javascript
-export const afterSubmit = autolog(function afterSubmit (ctx: EntryPoints.UserEvent.afterSubmitContext) {}
+export const afterSubmit = autolog(function afterSubmit (ctx: EntryPoints.UserEvent.afterSubmitContext) {})
 ```
 The above line will automatically log all methods defined on the _EC_ object/namespace
 

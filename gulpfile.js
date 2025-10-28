@@ -33,7 +33,7 @@ const includedNPMlibs = ['node_modules/lodash/lodash.js', 'node_modules/immutabl
 // other .d.ts files to include in declarations/ that are correct without any renaming
 const otherTypings = ['node_modules/moment/moment.d.ts',
    'aurelia-logging.d.ts',
-   'node_modules/bignumber.js/bignumber.d.ts',
+   'node_modules/bignumber.js/bignumber.d.ts','node_modules/bignumber.js/types.d.ts',
    'node_modules/immutable/dist/immutable.d.ts'
 ]
 

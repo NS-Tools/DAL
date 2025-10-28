@@ -186,7 +186,7 @@
     }
     /**
      * Automatically log method entry/exit with arguments to the netsuite execution log.
-     * Call this method at the end of your script. Log entries are 'DEBUG' level by default but may be overridden
+     * Log entries are 'DEBUG' level by default but may be overridden
      * as described below.
      *
      * If a function is passed, it wraps the function for logging.
@@ -201,7 +201,7 @@
      * @param [config.withGovernance] set true if you want remaining governance units info printed for
      * each function
      * false. Colors not configurable so that we maintain consistency across all our scripts.
-     * @param {number} [config.logType] the logging level to use, logLevel.debug, logLevel.info, etc.
+     * @param {number} [config.logLevel] the logging level to use, logLevel.debug, logLevel.info, etc.
      * @returns a function matching the signature of the original passed function `fn` or class so it can be used exactly like the original.
      *
      * @example automatically do logging for a helper function named `foo()`
@@ -292,7 +292,7 @@
      * @param [config.withGovernance] set true if you want remaining governance units info printed for
      * each function
      * false. Colors not configurable so that we maintain consistency across all our scripts.
-     * @param [config.logType] the logging level to use, logLevel.debug, logLevel.info, etc.
+     * @param [config.logLevel] the logging level to use, logLevel.debug, logLevel.info, etc.
      * @returns {} an array of advices applied to the matched methods
      *
      * @example log all methods on the object `X`
