@@ -1,6 +1,6 @@
 {
   "$schema": "https://typedoc.org/schema.json",
-  "name": "NetSuite FastTrack Toolkit (NFT)",
+  "name": "NS Tools/DAL",
   "entryPoints": ["EC_Logger.ts", "geography.ts", "governance.ts", "search.ts", "query.ts", "DataAccess"],
   "entryPointStrategy": "Expand",
   "out": "docs",

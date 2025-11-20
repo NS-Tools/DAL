@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "module": "umd",
+    "module": "amd",
     "target": "ES2019",
     "outDir": "dist",
     "noImplicitAny": false,
