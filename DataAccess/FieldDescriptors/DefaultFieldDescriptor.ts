@@ -1,6 +1,5 @@
-import { NetsuiteCurrentRecord } from '../Record';
-import { parseProp } from '../Record';
 import * as LogManager from '../../EC_Logger';
+import { type NetsuiteCurrentRecord, parseProp } from '../Record';
 
 const log = LogManager.getLogger('DataAccess.Record');
 
@@ -11,21 +10,20 @@ const log = LogManager.getLogger('DataAccess.Record');
  * @returns a decorator that returns a property descriptor to be used
  * with Object.defineProperty
  */
-export function DefaultFieldDescriptor<T extends NetsuiteCurrentRecord> (target: T, propertyKey: string): any {
-   const [isTextField, nsfield] = parseProp(propertyKey)
-   return {
-      get: function () {
-         log.debug('field GET', `${nsfield}, as text:${isTextField}`)
-         return isTextField ? this.nsrecord.getText({ fieldId: nsfield })
-            : this.nsrecord.getValue({ fieldId: nsfield })
-      },
-      set: function (value) {
-         // ignore undefined's
-         if (value !== undefined) {
-            if (isTextField) this.nsrecord.setText({ fieldId: nsfield, text: value })
-            else this.nsrecord.setValue({ fieldId: nsfield, value: value })
-         } else log.info(`ignoring field [${propertyKey}]`, 'field value is undefined')
-      },
-      enumerable: true //default is false
-   }
+export function DefaultFieldDescriptor<T extends NetsuiteCurrentRecord>(target: T, propertyKey: string): any {
+	const [isTextField, nsfield] = parseProp(propertyKey);
+	return {
+		get: function () {
+			log.debug('field GET', `${nsfield}, as text:${isTextField}`);
+			return isTextField ? this.nsrecord.getText({ fieldId: nsfield }) : this.nsrecord.getValue({ fieldId: nsfield });
+		},
+		set: function (value) {
+			// ignore undefined's
+			if (value !== undefined) {
+				if (isTextField) this.nsrecord.setText({ fieldId: nsfield, text: value });
+				else this.nsrecord.setValue({ fieldId: nsfield, value: value });
+			} else log.info(`ignoring field [${propertyKey}]`, 'field value is undefined');
+		},
+		enumerable: true, //default is false
+	};
 }

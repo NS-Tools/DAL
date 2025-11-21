@@ -15,29 +15,30 @@
  * @NApiVersion 2.x
  * @module
  */
-import { addAppender, Appender, clearAppenders, getLogger, Logger, logLevel } from './aurelia-logging'
-import * as nslog from 'N/log'
-import * as runtime from 'N/runtime'
+
+import * as nslog from 'N/log';
+import * as runtime from 'N/runtime';
+import { type Appender, addAppender, clearAppenders, getLogger, type Logger, logLevel } from './aurelia-logging';
 
 export {
-   logLevel,
-   Logger,
-   getAppenders,
-   clearAppenders,
-   addAppender,
-   getLogger,
-   removeAppender,
-   addCustomLevel,
-   getLevel,
-   setLevel,
-   removeCustomLevel,
-   type Appender
-} from './aurelia-logging'
+	type Appender,
+	addAppender,
+	addCustomLevel,
+	clearAppenders,
+	getAppenders,
+	getLevel,
+	getLogger,
+	Logger,
+	logLevel,
+	removeAppender,
+	removeCustomLevel,
+	setLevel,
+} from './aurelia-logging';
 
 /**
  * Value to be prepended to each log message title. Defaults to a random 4 digit integer
  */
-export let correlationId = Math.floor(Math.random() * 10000).toString()
+export let correlationId = Math.floor(Math.random() * 10000).toString();
 
 /**
  * if true then log message includes a random integer (or your custom) prefix to each log entry title.
@@ -50,7 +51,7 @@ export let correlationId = Math.floor(Math.random() * 10000).toString()
  * 1234> Another log title from the same run of the script
  * 5683> Log message from a subsequent execution of the script
  */
-export let includeCorrelationId = false
+export let includeCorrelationId = false;
 
 /**
  * Controls whether the correlation id prefixes should be included in log messages or not.
@@ -62,21 +63,21 @@ export let includeCorrelationId = false
  * 1234> Another log title from the same run of the script
  * 5683> Log message from a subsequent execution of the script
  */
-export const setIncludeCorrelationId = (enable: boolean) => includeCorrelationId = enable
+export const setIncludeCorrelationId = (enable: boolean) => (includeCorrelationId = enable);
 
 // internal function to invoke the ns log function and handles adding a title tag
-function log (loglevel: number, logger: Logger, ...rest: any[]) {
-   let [title, details] = rest
-   let prefix = ''
+function log(loglevel: number, logger: Logger, ...rest: any[]) {
+	const [title, details] = rest;
+	let prefix = '';
 
-   if (includeCorrelationId) {
-      prefix += `${correlationId}>`
-   }
-   // prefix all loggers except the 'default' one used by top level code
-   if (logger.id !== 'default') {
-      prefix += `[${logger.id}]`
-   }
-   nslog[toNetSuiteLogLevel(loglevel)]({ title: `${prefix} ${title}`, details: details })
+	if (includeCorrelationId) {
+		prefix += `${correlationId}>`;
+	}
+	// prefix all loggers except the 'default' one used by top level code
+	if (logger.id !== 'default') {
+		prefix += `[${logger.id}]`;
+	}
+	nslog[toNetSuiteLogLevel(loglevel)]({ title: `${prefix} ${title}`, details: details });
 }
 
 /**
@@ -94,52 +95,51 @@ function log (loglevel: number, logger: Logger, ...rest: any[]) {
  * error -> NS 'EMERGENCY'
  */
 export class ExecutionLogAppender implements Appender {
+	debug(logger: Logger, ...rest: any[]) {
+		log(logLevel.debug, logger, ...rest);
+	}
 
-   debug (logger: Logger, ...rest: any[]) {
-      log(logLevel.debug, logger, ...rest)
-   }
+	/**
+	 * Info about info
+	 * @param logger
+	 * @param rest
+	 */
+	info(logger: Logger, ...rest: any[]) {
+		log(logLevel.info, logger, ...rest);
+	}
 
-   /**
-    * Info about info
-    * @param logger
-    * @param rest
-    */
-   info (logger: Logger, ...rest: any[]) {
-      log(logLevel.info, logger, ...rest)
-   }
+	warn(logger: Logger, ...rest: any[]) {
+		log(logLevel.warn, logger, ...rest);
+	}
 
-   warn (logger: Logger, ...rest: any[]) {
-      log(logLevel.warn, logger, ...rest)
-   }
-
-   error (logger: Logger, ...rest: any[]) {
-      log(logLevel.error, logger, ...rest)
-   }
+	error(logger: Logger, ...rest: any[]) {
+		log(logLevel.error, logger, ...rest);
+	}
 }
 
 // instantiate the default logger and set it's logging level to the most verbose - this is used as
 // the 'main' logger by consumers
-let defaultLogger = getLogger('default')
-defaultLogger.setLevel(logLevel.debug)
+const defaultLogger = getLogger('default');
+defaultLogger.setLevel(logLevel.debug);
 
 // maps aurelia numeric levels to NS string level names
-function toNetSuiteLogLevel (level: number) {
-   switch (level) {
-      case logLevel.debug:
-         return 'debug'
-      case logLevel.info:
-         return 'audit'
-      case logLevel.warn:
-         return 'error'
-      case logLevel.error:
-         return 'emergency'
-      default:
-         return 'debug'
-   }
+function toNetSuiteLogLevel(level: number) {
+	switch (level) {
+		case logLevel.debug:
+			return 'debug';
+		case logLevel.info:
+			return 'audit';
+		case logLevel.warn:
+			return 'error';
+		case logLevel.error:
+			return 'emergency';
+		default:
+			return 'debug';
+	}
 }
 
-function getGovernanceMessage (governanceEnabled: boolean) {
-   return governanceEnabled ? `governance: ${runtime.getCurrentScript().getRemainingUsage()}` : undefined
+function getGovernanceMessage(governanceEnabled: boolean) {
+	return governanceEnabled ? `governance: ${runtime.getCurrentScript().getRemainingUsage()}` : undefined;
 }
 
 /**
@@ -165,23 +165,23 @@ function getGovernanceMessage (governanceEnabled: boolean) {
  * findKey(users, ({ age }) => age < 40)
  * // => 'barney' (iteration order is not guaranteed)
  */
-function findKey (object, predicate) {
-   let result
-   if (object == null) {
-      // @ts-ignore
-      // noinspection JSUnusedAssignment
-      return result
-   }
-   Object.keys(object).some((key) => {
-      const value = object[key]
-      if (predicate(value, key, object)) {
-         result = key
-         return true
-      } else return false
-   })
-   // @ts-ignore
-   // noinspection JSUnusedAssignment
-   return result
+function findKey(object, predicate) {
+	let result;
+	if (object == null) {
+		// @ts-expect-error
+		// noinspection JSUnusedAssignment
+		return result;
+	}
+	Object.keys(object).some((key) => {
+		const value = object[key];
+		if (predicate(value, key, object)) {
+			result = key;
+			return true;
+		} else return false;
+	});
+	// @ts-expect-error
+	// noinspection JSUnusedAssignment
+	return result;
 }
 
 /**
@@ -238,41 +238,41 @@ function findKey (object, predicate) {
  * |doing something | |
  * |Exit doSomething() | returned: 3 |
  */
-export function autolog<T extends (...args: any[]) => any> (fn: T, config?: AutoLogConfig): T {
-   if (!config) config = {}
-   // include method parameters by default
-   const withArgs = config.withArgs ?? true
-   // include return values by default
-   const withReturnValue = config.withReturnValue ?? true
-   // default to not show profiling info
-   const withProfiling = config.withProfiling ?? false
-   // default to not show governance info
-   const withGovernance = config.withGovernance ?? false
-   // logger name on which to autolog, default to the top level 'Default' logger used by scripts
-   const logger = config.logger || DefaultLogger
-   // logging level specified in config else default to debug. need to translate from number loglevels back to names
-   const level = findKey(logLevel, o => o === (config!.logLevel || logLevel.debug))!
-   return function (...args: Parameters<T>): ReturnType<T> {
-      // record function entry with details for every method on our explore object
-      const entryTitle = `Enter ${fn.name}() ${getGovernanceMessage(withGovernance)}`
-      const entryDetail = withArgs ? args : null
+export function autolog<T extends (...args: any[]) => any>(fn: T, config?: AutoLogConfig): T {
+	if (!config) config = {};
+	// include method parameters by default
+	const withArgs = config.withArgs ?? true;
+	// include return values by default
+	const withReturnValue = config.withReturnValue ?? true;
+	// default to not show profiling info
+	const withProfiling = config.withProfiling ?? false;
+	// default to not show governance info
+	const withGovernance = config.withGovernance ?? false;
+	// logger name on which to autolog, default to the top level 'Default' logger used by scripts
+	const logger = config.logger || DefaultLogger;
+	// logging level specified in config else default to debug. need to translate from number loglevels back to names
+	const level = findKey(logLevel, (o) => o === (config!.logLevel || logLevel.debug))!;
+	return function (...args: Parameters<T>): ReturnType<T> {
+		// record function entry with details for every method on our explore object
+		const entryTitle = `Enter ${fn.name}() ${getGovernanceMessage(withGovernance)}`;
+		const entryDetail = withArgs ? args : null;
 
-      logger[level](entryTitle, entryDetail)
+		logger[level](entryTitle, entryDetail);
 
-      const startTime = Date.now()
-      const retval = fn.apply(this, args)
-      let elapsedMessage = ''
-      if (withProfiling) {
-         const elapsedMilliseconds = Date.now() - startTime
-         const elapsedMinutes = ((elapsedMilliseconds / 1000) / 60).toFixed(2)
-         elapsedMessage = `${elapsedMilliseconds}ms = ${elapsedMinutes} minutes`
-      }
+		const startTime = Date.now();
+		const retval = fn.apply(this, args);
+		let elapsedMessage = '';
+		if (withProfiling) {
+			const elapsedMilliseconds = Date.now() - startTime;
+			const elapsedMinutes = (elapsedMilliseconds / 1000 / 60).toFixed(2);
+			elapsedMessage = `${elapsedMilliseconds}ms = ${elapsedMinutes} minutes`;
+		}
 
-      const exitTitle = `Exit ${fn.name}(): ${elapsedMessage} ${getGovernanceMessage(withGovernance)}`
-      const exitDetail = withReturnValue ? retval : null
-      logger[level](exitTitle, exitDetail)
-      return retval
-   } as T
+		const exitTitle = `Exit ${fn.name}(): ${elapsedMessage} ${getGovernanceMessage(withGovernance)}`;
+		const exitDetail = withReturnValue ? retval : null;
+		logger[level](exitTitle, exitDetail);
+		return retval;
+	} as T;
 }
 
 /**
@@ -335,32 +335,37 @@ export function autolog<T extends (...args: any[]) => any> (fn: T, config?: Auto
  * |doing something | |
  * |Exit doSomething() | returned: 3 |
  */
-export function autoLogMethodEntryExit (methodsToLogEntryExit: {
-   target: Object,
-   method: string | RegExp
-}, config?: AutoLogConfig) {
-   const { target, method } = methodsToLogEntryExit
+export function autoLogMethodEntryExit(
+	methodsToLogEntryExit: {
+		target: Object;
+		method: string | RegExp;
+	},
+	config?: AutoLogConfig,
+) {
+	const { target, method } = methodsToLogEntryExit;
 
-   if (typeof method === 'string') {
-      const original = target[method]
-      if (typeof original === 'function') {
-         target[method] = autolog(original, config)
-      }
-   } else if (method instanceof RegExp) {
-      if (Object.getPrototypeOf(target) === Object.prototype) {
-         for (const key of Object.keys(target)) {
-            if (method.test(key) && typeof target[key] === 'function') {
-               target[key] = autolog(target[key], config)
-            }
-         }
-      } else {
-         for (const key of Object.getOwnPropertyNames(Object.getPrototypeOf(target)).filter(name => name !== 'constructor')) {
-            if (method.test(key) && typeof target[key] === 'function') {
-               target[key] = autolog(target[key], config)
-            }
-         }
-      }
-   }
+	if (typeof method === 'string') {
+		const original = target[method];
+		if (typeof original === 'function') {
+			target[method] = autolog(original, config);
+		}
+	} else if (method instanceof RegExp) {
+		if (Object.getPrototypeOf(target) === Object.prototype) {
+			for (const key of Object.keys(target)) {
+				if (method.test(key) && typeof target[key] === 'function') {
+					target[key] = autolog(target[key], config);
+				}
+			}
+		} else {
+			for (const key of Object.getOwnPropertyNames(Object.getPrototypeOf(target)).filter(
+				(name) => name !== 'constructor',
+			)) {
+				if (method.test(key) && typeof target[key] === 'function') {
+					target[key] = autolog(target[key], config);
+				}
+			}
+		}
+	}
 }
 
 /**
@@ -368,30 +373,30 @@ export function autoLogMethodEntryExit (methodsToLogEntryExit: {
  * and can be passed to the autolog() function to customize the logging behavior.
  */
 export interface AutoLogConfig {
-   /**
-    * set true to include automatically include passed method arguments in the logs
-    */
-   withArgs?: boolean
-   /**
-    * If true, includes the function return value in the log
-    */
-   withReturnValue?: boolean
-   /**
-    * If true, including function (execution time) statistics
-    */
-   withProfiling?: boolean
-   /**
-    * If true, includes governance before and after function execution
-    */
-   withGovernance?: boolean
-   /**
-    * Name of logger to use for autologging, defaults to 'default'
-    */
-   logger?: Logger
-   /**
-    * The logging level autologging uses - defaults to 'debug'
-    */
-   logLevel?: number
+	/**
+	 * set true to include automatically include passed method arguments in the logs
+	 */
+	withArgs?: boolean;
+	/**
+	 * If true, includes the function return value in the log
+	 */
+	withReturnValue?: boolean;
+	/**
+	 * If true, including function (execution time) statistics
+	 */
+	withProfiling?: boolean;
+	/**
+	 * If true, includes governance before and after function execution
+	 */
+	withGovernance?: boolean;
+	/**
+	 * Name of logger to use for autologging, defaults to 'default'
+	 */
+	logger?: Logger;
+	/**
+	 * The logging level autologging uses - defaults to 'debug'
+	 */
+	logLevel?: number;
 }
 
 /**
@@ -414,22 +419,22 @@ export interface AutoLogConfig {
  * log.debug('hello world')
  * ```
  */
-export let DefaultLogger: Logger = defaultLogger
+export const DefaultLogger: Logger = defaultLogger;
 
 /**
  * Use to set the correlation id to a value other than the default random number
  * @param value new correlation id, will be used on all subsequent log messages for the current script execution
  */
-export const setCorrelationId = (value: string) => correlationId = value
+export const setCorrelationId = (value: string) => (correlationId = value);
 
 /**
  * Adds the passed aurelia logging console (browser/node) appender with diagnostic logging
  * @param alc the aurelia-logging-console module
  */
-function addConsoleAppender (alc: any) {
-   console.debug('** adding console appender **')
-   addAppender(new alc.ConsoleAppender())
-   defaultLogger.debug('added console appender')
+function addConsoleAppender(alc: any) {
+	console.debug('** adding console appender **');
+	addAppender(new alc.ConsoleAppender());
+	defaultLogger.debug('added console appender');
 }
 
 /**
@@ -438,19 +443,17 @@ function addConsoleAppender (alc: any) {
  * @param deps dependencies
  * @param cb the callback to invoke when the dependencies are resolved
  */
-declare function require (deps: string | string[], cb?: (...args: any[]) => void)
+declare function require(deps: string | string[], cb?: (...args: any[]) => void);
 
 // if we're executing client side, default to using the browser console for logging to avoid
 // expensive network round trips to the NS execution log. aurelia-logging-console depends upon the
 // global 'console' variable and will fail to load if it's not defined.
-declare var window
+declare var window;
 
 // if we're running in nodejs (i.e. unit tests) load the console appender using node require()
-if (typeof module === 'object')
-   addConsoleAppender(require('aurelia-logging-console'))
+if (typeof module === 'object') addConsoleAppender(require('aurelia-logging-console'));
 // Else detect NS client script and use NS's async require() to avoid blocking
-else if ((typeof console === 'object') && (typeof window === 'object') && window.alert)
-   require(['./aurelia-logging-console'], addConsoleAppender)
+else if (typeof console === 'object' && typeof window === 'object' && window.alert)
+	require(['./aurelia-logging-console'], addConsoleAppender);
 // otherwise go ahead and log to the execution log (assume server-side suitescript)
-else
-   addAppender(new ExecutionLogAppender())
+else addAppender(new ExecutionLogAppender());

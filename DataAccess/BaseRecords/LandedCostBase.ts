@@ -2,15 +2,14 @@
  * NS Base Landed Cost subrecord contains definitions for the built in fields
  */
 import { FieldType, NetsuiteRecord } from '../Record';
-import { Sublist, SublistLine, SublistFieldType } from '../Sublist';
+import { type Sublist, SublistFieldType, SublistLine } from '../Sublist';
 
 export class LandedCostDataSublist extends SublistLine {
-
 	@SublistFieldType.currency
-	amount: number
+	amount: number;
 
 	@SublistFieldType.select
-	landedcostcategory: number
+	landedcostcategory: number;
 }
 
 /**
@@ -19,9 +18,10 @@ export class LandedCostDataSublist extends SublistLine {
  * to the constructor.
  */
 export class LandedCostBase extends NetsuiteRecord {
-
-	static override recordType() { return 'landedcost' }
+	static override recordType() {
+		return 'landedcost';
+	}
 
 	@FieldType.sublist(LandedCostDataSublist)
-	landedcostdata: Sublist<LandedCostDataSublist>
+	landedcostdata: Sublist<LandedCostDataSublist>;
 }

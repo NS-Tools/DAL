@@ -1,6 +1,6 @@
-import * as runtime from "N/runtime"
-import {DefaultLogger as log} from "./EC_Logger"
-import * as task from "N/task"
+import * as runtime from 'N/runtime';
+import * as task from 'N/task';
+import { DefaultLogger as log } from './EC_Logger';
 
 /**
  * returns a predicate function which returns true if we're not out of governance, false if we have reached time
@@ -14,17 +14,22 @@ import * as task from "N/task"
  * sequence.takeWhile(governanceRemains())
  *
  */
-export function governanceRemains (startTime = Date.now(), minutes = 45, units = 200) { return () => {
-   let remainingUnits = runtime.getCurrentScript().getRemainingUsage()
-   const outOfUnits = remainingUnits < units
-   const elapsedSeconds = (Date.now() - startTime)/1000
-   const elapsedMinutes =  elapsedSeconds / 60
-   const outOfTime = elapsedMinutes > minutes // enforced max is 60, use 45 to be safe
-   const ok = !outOfUnits && !outOfTime
-   log.debug(`governance remains? ${ok}`, `elapsed time (m) ${elapsedMinutes.toFixed(3)}, units remaining ${remainingUnits}`)
+export function governanceRemains(startTime = Date.now(), minutes = 45, units = 200) {
+	return () => {
+		const remainingUnits = runtime.getCurrentScript().getRemainingUsage();
+		const outOfUnits = remainingUnits < units;
+		const elapsedSeconds = (Date.now() - startTime) / 1000;
+		const elapsedMinutes = elapsedSeconds / 60;
+		const outOfTime = elapsedMinutes > minutes; // enforced max is 60, use 45 to be safe
+		const ok = !outOfUnits && !outOfTime;
+		log.debug(
+			`governance remains? ${ok}`,
+			`elapsed time (m) ${elapsedMinutes.toFixed(3)}, units remaining ${remainingUnits}`,
+		);
 
-   return ok
-}}
+		return ok;
+	};
+}
 
 /**
  * Reschedules the current script using the same deployment id if we're out of governance
@@ -38,20 +43,23 @@ export function governanceRemains (startTime = Date.now(), minutes = 45, units =
  *
  */
 export function rescheduleIfNeeded(governancePredicate: () => boolean, params?: object) {
-   return () => {
-      const governanceRemains = governancePredicate()
-      if (!governanceRemains) {
-         log.warn('out of governance, rescheduling',
-            task.create({
-               taskType: task.TaskType.SCHEDULED_SCRIPT,
-               scriptId: runtime.getCurrentScript().id,
-               deploymentId: runtime.getCurrentScript().deploymentId,
-               params: params
-            }).submit()
-         )
-      }
-      return governanceRemains
-   }
+	return () => {
+		const governanceRemains = governancePredicate();
+		if (!governanceRemains) {
+			log.warn(
+				'out of governance, rescheduling',
+				task
+					.create({
+						taskType: task.TaskType.SCHEDULED_SCRIPT,
+						scriptId: runtime.getCurrentScript().id,
+						deploymentId: runtime.getCurrentScript().deploymentId,
+						params: params,
+					})
+					.submit(),
+			);
+		}
+		return governanceRemains;
+	};
 }
 
 /**
@@ -67,7 +75,6 @@ export function rescheduleIfNeeded(governancePredicate: () => boolean, params?: 
  * sequence.takeWhile(autoReschedule())
  *
  */
-export function autoReschedule (startTime?:number, minutes?:number, units?: number) {
-   return rescheduleIfNeeded(governanceRemains(startTime, minutes, units))
+export function autoReschedule(startTime?: number, minutes?: number, units?: number) {
+	return rescheduleIfNeeded(governanceRemains(startTime, minutes, units));
 }
-

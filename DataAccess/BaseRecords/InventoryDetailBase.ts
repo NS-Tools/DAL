@@ -2,47 +2,45 @@
  * NS Base Inventory Detail subrecord contains definitions for the built in fields
  */
 
-import { FieldType, NetsuiteRecord } from '../Record'
-import * as record from 'N/record'
-import { Sublist, SublistFieldType, SublistLine } from '../Sublist'
+import * as record from 'N/record';
+import { FieldType, NetsuiteRecord } from '../Record';
+import { type Sublist, SublistFieldType, SublistLine } from '../Sublist';
 
 export class InventoryAssignmentSublist extends SublistLine {
+	@SublistFieldType.select
+	binnumber: number;
 
-   @SublistFieldType.select
-   binnumber: number
+	@SublistFieldType.date
+	expirationdate: Date;
 
-   @SublistFieldType.date
-   expirationdate: Date
+	@SublistFieldType.integernumber
+	internalid: number;
 
-   @SublistFieldType.integernumber
-   internalid: number
+	/**
+	 * Use this field for Sales Orders and Item Fulfillments.
+	 */
+	@SublistFieldType.select
+	issueinventorynumber: number;
 
-   /**
-    * Use this field for Sales Orders and Item Fulfillments.
-    */
-   @SublistFieldType.select
-   issueinventorynumber: number
+	/**
+	 * set this field on Purchase Orders and Item Receipts
+	 * Setting this field and saving the parent record results in an InventoryNumber
+	 * record being created automatically behind the scenes.
+	 */
+	@SublistFieldType.freeformtext
+	receiptinventorynumber: string;
 
-   /**
-    * set this field on Purchase Orders and Item Receipts
-    * Setting this field and saving the parent record results in an InventoryNumber
-    * record being created automatically behind the scenes.
-    */
-   @SublistFieldType.freeformtext
-   receiptinventorynumber: string
+	@SublistFieldType.float
+	quantity: number;
 
-   @SublistFieldType.float
-   quantity: number
+	@SublistFieldType.float
+	quantityavailable: number;
 
-   @SublistFieldType.float
-   quantityavailable: number
+	@SublistFieldType.select
+	tobinnumber: number;
 
-   @SublistFieldType.select
-   tobinnumber: number
-
-   @SublistFieldType.select
-   toinventorystatus: number
-
+	@SublistFieldType.select
+	toinventorystatus: number;
 }
 
 /**
@@ -51,27 +49,28 @@ export class InventoryAssignmentSublist extends SublistLine {
  * to the constructor.
  */
 export class InventoryDetailBase extends NetsuiteRecord {
+	static override recordType() {
+		return record.Type.INVENTORY_DETAIL;
+	}
 
-   static override recordType() { return record.Type.INVENTORY_DETAIL }
+	@FieldType.select
+	item: number;
 
-   @FieldType.select
-   item: number
+	@FieldType.freeformtext
+	itemdescription: string;
 
-   @FieldType.freeformtext
-   itemdescription: string
+	@FieldType.select
+	location: number;
 
-   @FieldType.select
-   location: number
+	@FieldType.float
+	quantity: number;
 
-   @FieldType.float
-   quantity: number
+	@FieldType.select
+	tolocation: number;
 
-   @FieldType.select
-   tolocation: number
+	@FieldType.select
+	unit: number;
 
-   @FieldType.select
-   unit: number
-
-   @FieldType.sublist(InventoryAssignmentSublist)
-   inventoryassignment: Sublist<InventoryAssignmentSublist>
+	@FieldType.sublist(InventoryAssignmentSublist)
+	inventoryassignment: Sublist<InventoryAssignmentSublist>;
 }

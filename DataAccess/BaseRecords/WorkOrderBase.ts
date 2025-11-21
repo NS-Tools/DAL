@@ -1,83 +1,85 @@
-import { TransactionBase } from './Transaction'
-import { FieldType } from '../Record'
-import { Sublist, SublistFieldType, SublistLine } from '../Sublist'
-import { InventoryDetailBase } from './InventoryDetailBase'
-import * as record from 'N/record'
+import * as record from 'N/record';
+import { FieldType } from '../Record';
+import { type Sublist, SublistFieldType, SublistLine } from '../Sublist';
+import { InventoryDetailBase } from './InventoryDetailBase';
+import { TransactionBase } from './Transaction';
 
 /**
  * Work Order Item Sublist
  */
 export class ItemSublist extends SublistLine {
-   @SublistFieldType.select
-   item: number
+	@SublistFieldType.select
+	item: number;
 
-   @SublistFieldType.decimalnumber
-   price: number
+	@SublistFieldType.decimalnumber
+	price: number;
 
-   @SublistFieldType.integernumber
-   quantity: number
+	@SublistFieldType.integernumber
+	quantity: number;
 
-   @SublistFieldType.integernumber
-   bomquantity: number
+	@SublistFieldType.integernumber
+	bomquantity: number;
 
-   @SublistFieldType.decimalnumber
-   rate: number
+	@SublistFieldType.decimalnumber
+	rate: number;
 
-   @SublistFieldType.select
-   units: number
+	@SublistFieldType.select
+	units: number;
 
-   @SublistFieldType.decimalnumber
-   amount: number
+	@SublistFieldType.decimalnumber
+	amount: number;
 
-   @SublistFieldType.freeformtext
-   description: string
+	@SublistFieldType.freeformtext
+	description: string;
 
-   @SublistFieldType.subrecord(InventoryDetailBase)
-   inventorydetail: InventoryDetailBase
+	@SublistFieldType.subrecord(InventoryDetailBase)
+	inventorydetail: InventoryDetailBase;
 }
 
 /**
  * NetSuite Work Order record type
  */
 export class WorkOrderBase extends TransactionBase {
-   @FieldType.date
-   actualproductionenddate: Date
+	@FieldType.date
+	actualproductionenddate: Date;
 
-   @FieldType.date
-   actualproductionstartdate: Date
+	@FieldType.date
+	actualproductionstartdate: Date;
 
-   @FieldType.select
-   assemblyitem: number
+	@FieldType.select
+	assemblyitem: number;
 
-   @FieldType.select
-   billofmaterials: number
+	@FieldType.select
+	billofmaterials: number;
 
-   @FieldType.select
-   billofmaterialsrevision: number
+	@FieldType.select
+	billofmaterialsrevision: number;
 
-   @FieldType.select
-   createdfrom: number
+	@FieldType.select
+	createdfrom: number;
 
-   @FieldType.date
-   enddate: Date
+	@FieldType.date
+	enddate: Date;
 
-   @FieldType.checkbox
-   firmed: boolean
+	@FieldType.checkbox
+	firmed: boolean;
 
-   @FieldType.select
-   job: number
+	@FieldType.select
+	job: number;
 
-   @FieldType.integernumber
-   quantity: number
+	@FieldType.integernumber
+	quantity: number;
 
-   @FieldType.date
-   startdate: Date
+	@FieldType.date
+	startdate: Date;
 
-   @FieldType.select
-   units: number
+	@FieldType.select
+	units: number;
 
-   @FieldType.sublist(ItemSublist)
-   item: Sublist<ItemSublist>
+	@FieldType.sublist(ItemSublist)
+	item: Sublist<ItemSublist>;
 
-   static override recordType() { return record.Type.WORK_ORDER }
+	static override recordType() {
+		return record.Type.WORK_ORDER;
+	}
 }

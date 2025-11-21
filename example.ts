@@ -9,133 +9,124 @@ this line adds lodash it as a silent dependency of this
 module (in the correct path of ./lodash assuming lodash is installed in the same folder as this script)
 */
 
-import * as LogManager from './EC_Logger'
-import {CustomerBase} from "./DataAccess/BaseRecords/CustomerBase"
-import {ItemSublist, SalesOrderBase} from "./DataAccess/BaseRecords/SalesOrderBase";
-import { FieldType, NetsuiteRecord } from './DataAccess/Record'
-import { Sublist } from './DataAccess/Sublist'
-import * as _ from "lodash"
+import * as _ from 'lodash';
+import { CustomerBase } from './DataAccess/BaseRecords/CustomerBase';
+import { ItemSublist, SalesOrderBase } from './DataAccess/BaseRecords/SalesOrderBase';
+import { FieldType, NetsuiteRecord } from './DataAccess/Record';
+import type { Sublist } from './DataAccess/Sublist';
+import * as LogManager from './EC_Logger';
 
-
-let log = LogManager.DefaultLogger
+const log = LogManager.DefaultLogger;
 
 class Customer extends CustomerBase {
-   // just add 'Text' to the property name to get/set text value. 'subsidiary' property still exists
-   // as the internal id value
-   @FieldType.select
-   subsidiaryText: string
-
+	// just add 'Text' to the property name to get/set text value. 'subsidiary' property still exists
+	// as the internal id value
+	@FieldType.select
+	subsidiaryText: string;
 }
 
 // the SalesOrderBase class has the item sublist fields already defined.
 // you add fields that aren't already in SalesOrderBase here (e.g. custom fields, some less frequently used native fields)
 class SalesOrder extends SalesOrderBase {
-
-   @FieldType.sublist(ItemSublist)
-   item: Sublist<ItemSublist>
+	@FieldType.sublist(ItemSublist)
+	item: Sublist<ItemSublist>;
 }
 
 // Example Custom Record definition
 // see the CodeGeneration/ folder for ways to autogenerate classes for your custom records.
 class MyCustomRecord extends NetsuiteRecord {
-   static recordType() { return 'customrecord_myrecordid' }
+	static recordType() {
+		return 'customrecord_myrecordid';
+	}
 
-   @FieldType.freeformtext
-   custrecord_some_text: string
+	@FieldType.freeformtext
+	custrecord_some_text: string;
 }
 
-function demoCustomRecord () {
-   // custom records work just like native records with NSDAL.
-   const customRec = new MyCustomRecord(123)
-   customRec.custrecord_some_text = 'hello world'
-   customRec.save()
+function demoCustomRecord() {
+	// custom records work just like native records with NSDAL.
+	const customRec = new MyCustomRecord(123);
+	customRec.custrecord_some_text = 'hello world';
+	customRec.save();
 }
 
-function demoSalesOrderLineItems () {
+function demoSalesOrderLineItems() {
+	// load sales order internal id 123
+	const so = new SalesOrder(123);
 
-   // load sales order internal id 123
-   const so = new SalesOrder(123)
+	// just some contrived examples to illustrate the ease of using the item sublist as an array
 
-   // just some contrived examples to illustrate the ease of using the item sublist as an array
+	// access first line item
+	so.item[0].quantity = 1;
 
-   // access first line item
-   so.item[0].quantity = 1
+	// you can also access the item row when saved as a variable reference - shorter code
+	const line = so.item[0];
+	line.rate = 20;
 
-   // you can also access the item row when saved as a variable reference - shorter code
-   const line = so.item[0]
-   line.rate = 20
+	// get all line items over $50 amount
+	const overFifty = _.filter(so.item, (item) => item.amount > 50.0);
+	if (_.isEmpty(overFifty)) {
+		// do something if no lines over 50.00
+	}
 
-   // get all line items over $50 amount
-   const overFifty = _.filter(so.item, item=> item.amount > 50.00 )
-   if (_.isEmpty(overFifty)) {
-      // do something if no lines over 50.00
-   }
+	// increase quantity by 1 for all lines
+	_.map(so.item, (i) => (i.quantity += 1));
 
-   // increase quantity by 1 for all lines
-   _.map(so.item, i => i.quantity += 1 )
+	// find first line item with specific item
+	const found = _.find(so.item, (i) => i.item == 123);
 
-   // find first line item with specific item
-   const found = _.find(so.item, i => i.item == 123 )
+	if (found) {
+		// do something with found line
+		found.quantity += 1;
+	}
 
-   if (found) {
-      // do something with found line
-      found.quantity += 1
-   }
+	// ... can then access fields on the found line...
+	// found.quantity
+	// found.rate
+	// found.itemtype
+	// found.description
+	// etc.
 
-   // ... can then access fields on the found line...
-   // found.quantity
-   // found.rate
-   // found.itemtype
-   // found.description
-   // etc.
+	// add a line item to end of sublist
+	const newLine = so.item.addLine();
+	newLine.item = 123;
+	newLine.quantity = 1;
 
-   // add a line item to end of sublist
-   let newLine = so.item.addLine()
-   newLine.item = 123
-   newLine.quantity = 1
-
-   // insert a line in the middle of the list
-   const inserted = so.item.addLine(true, 2)
-   inserted.item = 123
-   inserted.quantity = 2
+	// insert a line in the middle of the list
+	const inserted = so.item.addLine(true, 2);
+	inserted.item = 123;
+	inserted.quantity = 2;
 }
 
-function sublistExamples () {
+function sublistExamples() {
+	// load sales order internal id 123 _in dynamic mode_
+	const so = new SalesOrder(123, true);
 
-   // load sales order internal id 123 _in dynamic mode_
-   const so = new SalesOrder(123,true)
+	// access first line item - this will use `setCurrentSublistValue()` since we're in dynamic mode.
+	// NOTE: records not `isDynamic = true` will use _standard mode_ APIs
+	so.item[0].quantity = 1;
 
-   // access first line item - this will use `setCurrentSublistValue()` since we're in dynamic mode.
-   // NOTE: records not `isDynamic = true` will use _standard mode_ APIs
-   so.item[0].quantity = 1
-
-   // disable the default dynamic mode API usage - fall back to standard mode instead, even though our underlying
-   // NetSuite record is in dynamic mode.
-   so.item.useDynamicModeAPI = false
-   so.item[0].quantity = 1 // uses standard mode api `setSublistValue()`
-   so.item.useDynamicModeAPI = true // restore allowing dynamic mode API use.
+	// disable the default dynamic mode API usage - fall back to standard mode instead, even though our underlying
+	// NetSuite record is in dynamic mode.
+	so.item.useDynamicModeAPI = false;
+	so.item[0].quantity = 1; // uses standard mode api `setSublistValue()`
+	so.item.useDynamicModeAPI = true; // restore allowing dynamic mode API use.
 }
-
-
 
 export = {
+	onRequest: (/*req,  resp */) => {
+		const c = new Customer(227);
 
-   onRequest: (/*req,  resp */) => {
+		log.info('subsidiary value', c.subsidiary);
+		log.info('subsidiary text', c.subsidiaryText);
 
-      const c = new Customer(227)
-
-      log.info('subsidiary value', c.subsidiary)
-      log.info('subsidiary text', c.subsidiaryText)
-
-      c.comments = c.comments + _.random(1,100).toString()
-      log.warn('warning', 'this is a warning')
-      log.info('customer', c)
-      let id = c.save()
-      log.debug(`saved record id: ${id}`)
-      demoSalesOrderLineItems()
-      demoCustomRecord()
-      sublistExamples()
-   }
-}
-
-
+		c.comments = c.comments + _.random(1, 100).toString();
+		log.warn('warning', 'this is a warning');
+		log.info('customer', c);
+		const id = c.save();
+		log.debug(`saved record id: ${id}`);
+		demoSalesOrderLineItems();
+		demoCustomRecord();
+		sublistExamples();
+	},
+};

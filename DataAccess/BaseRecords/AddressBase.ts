@@ -1,4 +1,4 @@
-import { FieldType, NetsuiteRecord } from '../Record'
+import { FieldType, NetsuiteRecord } from '../Record';
 
 /**
  * The addressbook 'subrecord'. In SS2.x this is mostly treated as a normal record object but you can't
@@ -27,46 +27,45 @@ import { FieldType, NetsuiteRecord } from '../Record'
  ```
  */
 export class AddressBase extends NetsuiteRecord {
+	@FieldType.freeformtext
+	addr1: string;
 
-   @FieldType.freeformtext
-   addr1: string
+	@FieldType.freeformtext
+	addr2: string;
 
-   @FieldType.freeformtext
-   addr2: string
+	@FieldType.freeformtext
+	addr3: string;
 
-   @FieldType.freeformtext
-   addr3: string
+	@FieldType.freeformtext
+	addressee: string;
 
-   @FieldType.freeformtext
-   addressee: string
+	/**
+	 * note this field name differs from the 'records browser' documentation
+	 */
+	@FieldType.freeformtext
+	addrphone: string;
 
-   /**
-    * note this field name differs from the 'records browser' documentation
-    */
-   @FieldType.freeformtext
-   addrphone: string
+	@FieldType.freeformtext
+	addrtext: string;
 
-   @FieldType.freeformtext
-   addrtext: string
+	@FieldType.freeformtext
+	attention: string;
 
-   @FieldType.freeformtext
-   attention: string
+	@FieldType.freeformtext
+	city: string;
 
-   @FieldType.freeformtext
-   city: string
+	/**
+	 * Unlike other `select` fields which take a numeric internal id value, this one requires the country abbreviation as the key (e.g. 'US')
+	 */
+	@FieldType.select
+	country: string;
 
-   /**
-    * Unlike other `select` fields which take a numeric internal id value, this one requires the country abbreviation as the key (e.g. 'US')
-    */
-   @FieldType.select
-   country: string
+	@FieldType.freeformtext
+	state: string;
 
-   @FieldType.freeformtext
-   state: string
+	@FieldType.freeformtext
+	zip: string;
 
-   @FieldType.freeformtext
-   zip: string
-
-   @FieldType.checkbox
-   override: boolean
+	@FieldType.checkbox
+	override: boolean;
 }

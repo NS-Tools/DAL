@@ -1,215 +1,202 @@
-import {nsSearchResult2obj} from '../search'
-import * as search from 'N/search'
-import {Seq} from 'immutable'
+import type * as search from 'N/search';
+import { Seq } from 'immutable';
+import { nsSearchResult2obj } from '../search';
 
-describe('nsSearchResult2obj', function () {
+describe('nsSearchResult2obj', () => {
+	/**
+	 *
+	 * @param colname column internal id
+	 * @param label optional label for column
+	 * @param value what value (getValue()) should the result have?
+	 * @param text what text (getText()) value should the result have?
+	 */
+	function getFakeSearchResult(colname, label?, value?, text?): search.Result {
+		return {
+			id: '1',
+			getValue: jest.fn().mockReturnValueOnce(value),
+			getText: jest.fn().mockReturnValueOnce(text),
+			recordType: 'recordType',
+			columns: [
+				{
+					name: colname,
+					label: label,
+				},
+			],
+		} as any;
+	}
 
-   /**
-    *
-    * @param colname column internal id
-    * @param label optional label for column
-    * @param value what value (getValue()) should the result have?
-    * @param text what text (getText()) value should the result have?
-    */
-   function getFakeSearchResult (colname, label?, value?, text?): search.Result {
-      return {
-         id: '1',
-         getValue: jest.fn().mockReturnValueOnce(value),
-         getText: jest.fn().mockReturnValueOnce(text),
-         recordType: 'recordType',
-         columns: [{
-            name: colname,
-            label: label
-         }]
-      } as any
+	test('defaults to column name if label is undefined', () => {
+		const noLabelResult = getFakeSearchResult('foo', undefined);
+		// default useLabels
+		const x = nsSearchResult2obj()(noLabelResult);
+		expect(x).toHaveProperty('foo');
+	});
 
-   }
+	test('uses column label by default', () => {
+		const labeledResult = getFakeSearchResult('foo', 'fooLabel');
+		// default useLabels
+		const x = nsSearchResult2obj()(labeledResult);
+		expect(x).toHaveProperty('fooLabel');
+	});
 
-   test('defaults to column name if label is undefined', () => {
+	test('uses column label if useLabels is true', () => {
+		const labeledResult = getFakeSearchResult('foo', 'fooLabel');
+		// explicitly set useLabels = true
+		const x = nsSearchResult2obj(true)(labeledResult);
+		expect(x).toHaveProperty('fooLabel');
+	});
 
-      const noLabelResult = getFakeSearchResult('foo', undefined)
-      // default useLabels
-      const x = nsSearchResult2obj()(noLabelResult)
-      expect(x).toHaveProperty('foo')
-   })
+	test('uses column name if useLabels is false', () => {
+		const labeledResult = getFakeSearchResult('foo', 'fooLabel');
+		// default useLabels
+		const x = nsSearchResult2obj(false)(labeledResult);
+		expect(x).toHaveProperty('foo');
+		expect(x).not.toHaveProperty('fooLabel');
+	});
 
-   test('uses column label by default', () => {
+	test('does not generate xxxText field if text value is falsey', () => {
+		const labeledResult = getFakeSearchResult('foo', 'fooLabel', 'value', undefined);
+		// default useLabels
+		const x = nsSearchResult2obj()(labeledResult);
+		expect(x).toHaveProperty('fooLabel');
+		expect(x).not.toHaveProperty('fooLabelText');
+	});
 
-      const labeledResult = getFakeSearchResult('foo', 'fooLabel')
-      // default useLabels
-      const x = nsSearchResult2obj()(labeledResult)
-      expect(x).toHaveProperty('fooLabel')
-   })
+	test('does not generate xxxText field if caller says not to', () => {
+		const labeledResult = getFakeSearchResult('foo', 'fooLabel', 'value', 'foo text');
+		// default useLabels, explicitly disable the xxxText property addition.
+		const x = nsSearchResult2obj(true, false)(labeledResult);
+		expect(x).toHaveProperty('fooLabel');
+		expect(x).not.toHaveProperty('fooLabelText');
+	});
 
-   test('uses column label if useLabels is true', () => {
+	test('generates xxxText field if text value truthy', () => {
+		const labeledResult = getFakeSearchResult('foo', 'fooLabel', 'value', 'value text');
+		// default useLabels
+		const x = nsSearchResult2obj()(labeledResult);
+		expect(x).toHaveProperty('fooLabel', 'value');
+		expect(x).toHaveProperty('fooLabelText', 'value text');
+	});
 
-      const labeledResult = getFakeSearchResult('foo', 'fooLabel')
-      // explicitly set useLabels = true
-      const x = nsSearchResult2obj(true)(labeledResult)
-      expect(x).toHaveProperty('fooLabel')
-   })
+	test('two column result generates xxxText field only if text value truthy', () => {
+		const labeledResult = getFakeSearchResult('foo', 'fooLabel', 'value', 'value text');
+		labeledResult.columns.push({ name: 'bar', label: undefined });
 
-   test('uses column name if useLabels is false', () => {
+		// mock the second call to getValue() to return 5 (for the 'bar' property)
+		const mockGetValue = labeledResult.getValue as jest.Mock;
+		mockGetValue.mockReturnValueOnce(5);
 
-      const labeledResult = getFakeSearchResult('foo', 'fooLabel')
-      // default useLabels
-      const x = nsSearchResult2obj(false)(labeledResult)
-      expect(x).toHaveProperty('foo')
-      expect(x).not.toHaveProperty('fooLabel')
-   })
+		// default useLabels = true
+		const x = nsSearchResult2obj()(labeledResult);
+		expect(x).toHaveProperty('fooLabel', 'value');
+		expect(x).toHaveProperty('fooLabelText', 'value text');
+		expect(x).toEqual({
+			id: '1',
+			fooLabel: 'value',
+			fooLabelText: 'value text',
+			bar: 5,
+			// note no 'barText' here
+			recordType: 'recordType',
+		});
+	});
 
-   test('does not generate xxxText field if text value is falsey', () => {
+	test('handles search result with NO columns', () => {
+		const noColumnsResult = getFakeSearchResult('foo', 'fooLabel', 'value', 'value text');
+		// @ts-expect-error Error:(104, 14) TS2790: The operand of a 'delete' operator must be optional.
+		delete noColumnsResult.columns;
 
-      const labeledResult = getFakeSearchResult('foo', 'fooLabel', 'value', undefined)
-      // default useLabels
-      const x = nsSearchResult2obj()(labeledResult)
-      expect(x).toHaveProperty('fooLabel')
-      expect(x).not.toHaveProperty('fooLabelText')
-   })
+		// mock the second call to getValue() to return 5 (for the 'bar' property)
+		const mockGetValue = noColumnsResult.getValue as jest.Mock;
+		mockGetValue.mockReturnValueOnce(5);
 
-   test('does not generate xxxText field if caller says not to', () => {
-      const labeledResult = getFakeSearchResult('foo', 'fooLabel', 'value', 'foo text')
-      // default useLabels, explicitly disable the xxxText property addition.
-      const x = nsSearchResult2obj(true, false)(labeledResult)
-      expect(x).toHaveProperty('fooLabel')
-      expect(x).not.toHaveProperty('fooLabelText')
-   })
-
-   test('generates xxxText field if text value truthy', () => {
-
-      const labeledResult = getFakeSearchResult('foo', 'fooLabel', 'value', 'value text')
-      // default useLabels
-      const x = nsSearchResult2obj()(labeledResult)
-      expect(x).toHaveProperty('fooLabel', 'value')
-      expect(x).toHaveProperty('fooLabelText', 'value text')
-   })
-
-   test('two column result generates xxxText field only if text value truthy', () => {
-
-      const labeledResult = getFakeSearchResult('foo', 'fooLabel', 'value', 'value text')
-      labeledResult.columns.push({name: 'bar', label: undefined})
-
-      // mock the second call to getValue() to return 5 (for the 'bar' property)
-      const mockGetValue = labeledResult.getValue as jest.Mock
-      mockGetValue.mockReturnValueOnce(5)
-
-      // default useLabels = true
-      const x = nsSearchResult2obj()(labeledResult)
-      expect(x).toHaveProperty('fooLabel', 'value')
-      expect(x).toHaveProperty('fooLabelText', 'value text')
-      expect(x).toEqual({
-         id: '1',
-         fooLabel: 'value',
-         fooLabelText: 'value text',
-         bar: 5,
-         // note no 'barText' here
-         recordType:'recordType'
-      })
-   })
-
-   test('handles search result with NO columns', () => {
-      const noColumnsResult = getFakeSearchResult('foo', 'fooLabel', 'value', 'value text')
-      // @ts-ignore Error:(104, 14) TS2790: The operand of a 'delete' operator must be optional.
-      delete noColumnsResult.columns
-
-      // mock the second call to getValue() to return 5 (for the 'bar' property)
-      const mockGetValue = noColumnsResult.getValue as jest.Mock
-      mockGetValue.mockReturnValueOnce(5)
-
-      const x = nsSearchResult2obj()(noColumnsResult)
-      expect(x).toEqual({
-         // id always there,  note no additional columns defined
-         id: '1',
-         // recordType is always present on search results
-         recordType: "recordType"
-      })
-   })
-})
+		const x = nsSearchResult2obj()(noColumnsResult);
+		expect(x).toEqual({
+			// id always there,  note no additional columns defined
+			id: '1',
+			// recordType is always present on search results
+			recordType: 'recordType',
+		});
+	});
+});
 describe('ImmutableJS behavior', () => {
+	test('indirect toString() of Seq causes eager eval', () => {
+		if (process.version > 'v10') {
+			// this behavior seems to be fixed in newer versions of node because they
+			// changed the default depth for object serialization on console
+			// e.g. https://github.com/nodejs/node/pull/24326
+			return;
+		}
+		const alwaysTrue = jest.fn((val) => {
+			console.log(`alwaysTrue called with value ${val}`);
+			return true;
+		});
 
-   test('indirect toString() of Seq causes eager eval', function () {
-      if (process.version > 'v10') {
-         // this behavior seems to be fixed in newer versions of node because they
-         // changed the default depth for object serialization on console
-         // e.g. https://github.com/nodejs/node/pull/24326
-         return
-      }
-      const alwaysTrue = jest.fn((val) => {
-         console.log(`alwaysTrue called with value ${val}`)
-         return true
-      })
+		Seq([1, 2, 3, 4, 5])
+			.takeWhile(alwaysTrue)
+			// subtle issue - this causes repeated eager evaluation due to serializing the 3rd argument passed
+			.forEach(console.log);
 
-      Seq([1, 2, 3, 4, 5])
-         .takeWhile(alwaysTrue)
-         // subtle issue - this causes repeated eager evaluation due to serializing the 3rd argument passed
-         .forEach(console.log)
+		// above forEach() passes value, key, and the *entire iterable* to console.log. console.log then proceeds to
+		// convert its given arguments to strings. When toString() is called on the third param (the iterable sequence)
+		// it forces eager evaluation of the whole sequence because a Seq() has toString() defined to do just that.
+		//
+		// So each value of the sequence is first passed through takeWhile() predicate (alwaysTrue()) then the
+		// entire sequence is passed through alwaysTrue() again as it's being serialized to [1,2,3,4,5]. This results
+		// in 6 invocations of alwaysTrue() for each element - once as expected by the forEach() and 5 more as we
+		// reserialize the entire sequence (1..5)
+		// see next test for workaround
+		expect(alwaysTrue).toBeCalledTimes(5 * 6);
+	});
 
-      // above forEach() passes value, key, and the *entire iterable* to console.log. console.log then proceeds to
-      // convert its given arguments to strings. When toString() is called on the third param (the iterable sequence)
-      // it forces eager evaluation of the whole sequence because a Seq() has toString() defined to do just that.
-      //
-      // So each value of the sequence is first passed through takeWhile() predicate (alwaysTrue()) then the
-      // entire sequence is passed through alwaysTrue() again as it's being serialized to [1,2,3,4,5]. This results
-      // in 6 invocations of alwaysTrue() for each element - once as expected by the forEach() and 5 more as we
-      // reserialize the entire sequence (1..5)
-      // see next test for workaround
-      expect(alwaysTrue).toBeCalledTimes(5 * 6)
-   })
+	test('how to avoid eager eval of Seq', () => {
+		const alwaysTrue = jest.fn((val) => {
+			console.log(`alwaysTrue called with value ${val}`);
+			return true;
+		});
 
-   test('how to avoid eager eval of Seq', function () {
+		Seq([1, 2, 3, 4, 5])
+			.takeWhile(alwaysTrue)
+			// arity-1 function will NOT cause repeated eager evaluation of the sequence 1..5
+			// because console.log only proceses the value, not also receiving the key and iterable
+			.forEach((x) => console.log(x));
 
-      const alwaysTrue = jest.fn((val) => {
-         console.log(`alwaysTrue called with value ${val}`)
-         return true
-      })
+		// above forEach() passes just value to console.log
+		expect(alwaysTrue).toBeCalledTimes(5);
+	});
 
-      Seq([1, 2, 3, 4, 5])
-         .takeWhile(alwaysTrue)
-         // arity-1 function will NOT cause repeated eager evaluation of the sequence 1..5
-         // because console.log only proceses the value, not also receiving the key and iterable
-         .forEach(x => console.log(x))
+	test('behavior of groupBy', () => {
+		const taker = jest.fn((val) => {
+			console.log(`taker called with value ${val}, length ${val.size}`);
+			return val.size === 1;
+		});
 
-      // above forEach() passes just value to console.log
-      expect(alwaysTrue).toBeCalledTimes(5)
-   })
+		const sideEffect = jest.fn((val) => {
+			console.log(`side effect called with value ${val}`);
+		});
 
-   test('behavior of groupBy', function () {
+		Seq([1, 2, 3, 4, 4, 5, 5])
+			// groupBy returns a keyed sequence (<key, value>) that for some reason I don't understand
+			// invokes the .map() *eagerly* (though we do know groupBy() itself must be eager)
+			.groupBy((x) => x)
+			.takeWhile(taker)
+			.forEach((x) => sideEffect(x));
 
-      const taker = jest.fn((val) => {
-         console.log(`taker called with value ${val}, length ${val.size}`)
-         return val.size === 1
-      })
+		// see the console log here - all calls to take() happen before any calls to sideEffect()
 
-      const sideEffect = jest.fn((val) => {
-         console.log(`side effect called with value ${val}`)
-      })
+		expect(taker).toBeCalledTimes(4);
+		// expect our side effect to only be called 3 times due to .takeWhile()
+		expect(sideEffect).toBeCalledTimes(3);
 
+		console.log('---- BETTER/EXPECTED BEHAVIOR ---');
+		Seq([1, 2, 3, 4, 4, 5, 5])
+			// groupBy returns a keyed sequence (<key, value>) that for some reason I don't understand
+			// invokes the .map() *eagerly* (though we do know groupBy() itself must be eager)
+			.groupBy((x) => x)
+			.valueSeq() // converting to a valueSeq Here gets us back into lazy eval
+			.takeWhile(taker)
+			.forEach((x) => sideEffect(x));
 
-      Seq([1, 2, 3, 4, 4, 5, 5])
-      // groupBy returns a keyed sequence (<key, value>) that for some reason I don't understand
-      // invokes the .map() *eagerly* (though we do know groupBy() itself must be eager)
-         .groupBy(x => x)
-         .takeWhile(taker)
-         .forEach(x => sideEffect(x))
-
-      // see the console log here - all calls to take() happen before any calls to sideEffect()
-
-      expect(taker).toBeCalledTimes(4)
-      // expect our side effect to only be called 3 times due to .takeWhile()
-      expect(sideEffect).toBeCalledTimes(3)
-
-      console.log('---- BETTER/EXPECTED BEHAVIOR ---')
-      Seq([1, 2, 3, 4, 4, 5, 5])
-      // groupBy returns a keyed sequence (<key, value>) that for some reason I don't understand
-      // invokes the .map() *eagerly* (though we do know groupBy() itself must be eager)
-         .groupBy(x => x)
-         .valueSeq() // converting to a valueSeq Here gets us back into lazy eval
-         .takeWhile(taker)
-         .forEach(x => sideEffect(x))
-
-      // see console output from above - now take is called then sideEffect as expected,
-      // once per each passing value.
-
-   })
-})
-
+		// see console output from above - now take is called then sideEffect as expected,
+		// once per each passing value.
+	});
+});

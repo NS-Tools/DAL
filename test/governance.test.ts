@@ -1,100 +1,85 @@
 // mock must be declared at top of file because ts-jest uses babel to auto-hoist and it was erroring all tests
 // import * as mockrecord from "../__mocks__/N/record"
 
-import * as mocktask from '../__mocks__/N/task'
-import {governanceRemains,rescheduleIfNeeded} from "../governance"
-import * as mockruntime from '../__mocks__/N/runtime'
-import * as moment from "moment"
+import * as moment from 'moment';
+import * as mockruntime from '../__mocks__/N/runtime';
+import * as mocktask from '../__mocks__/N/task';
+import { governanceRemains, rescheduleIfNeeded } from '../governance';
 
+describe('governance', () => {
+	const getRemainingUsage = mockruntime.getCurrentScript().getRemainingUsage;
 
-describe('governance', function () {
+	test('time and units remain returns true', () => {
+		getRemainingUsage.mockReturnValue(1000);
+		const sut = governanceRemains();
+		expect(sut()).toEqual(true);
+	});
 
-   const getRemainingUsage = mockruntime.getCurrentScript().getRemainingUsage
+	test('drop below units threshold returns false', () => {
+		getRemainingUsage.mockReturnValue(199);
+		const sut = governanceRemains();
 
-   test('time and units remain returns true', function () {
+		expect(sut()).toEqual(false);
+	});
 
-      getRemainingUsage.mockReturnValue(1000)
-      const sut = governanceRemains()
-      expect(sut()).toEqual(true)
-   })
+	test('drop below time threshold returns false', () => {
+		getRemainingUsage.mockReturnValue(1000);
+		// simulate a start time 46 minutes in the past
+		const inThePast = moment().subtract(46, 'minutes').valueOf();
 
-   test('drop below units threshold returns false', function () {
+		const sut = governanceRemains(inThePast);
 
-      getRemainingUsage.mockReturnValue(199)
-      const sut = governanceRemains()
+		expect(sut()).toEqual(false);
+	});
 
-      expect(sut()).toEqual(false)
-   })
+	test('drop below time threshold and units returns false', () => {
+		getRemainingUsage.mockReturnValue(100);
+		// simulate a start time 46 minutes in the past
+		const inThePast = moment().subtract(46, 'minutes').valueOf();
 
-   test('drop below time threshold returns false', function () {
+		const sut = governanceRemains(inThePast);
 
-      getRemainingUsage.mockReturnValue(1000)
-      // simulate a start time 46 minutes in the past
-      const inThePast = moment().subtract(46, 'minutes').valueOf()
+		expect(sut()).toEqual(false);
+	});
 
-      const sut = governanceRemains(inThePast)
+	test('time remains should return true', () => {
+		getRemainingUsage.mockReturnValue(1000);
+		// simulate a start time 30 minutes in the past - still has 15 minutes of time before the default 45 min limit
+		const inThePast = moment().subtract(30, 'minutes').valueOf();
 
-      expect(sut()).toEqual(false)
+		const sut = governanceRemains(inThePast);
 
-   })
+		expect(sut()).toEqual(true);
+	});
+});
 
+describe('rescheduling', () => {
+	test('should not reschedule if governance remains (no parms)', () => {
+		const alwaysTrue = () => true;
 
-   test('drop below time threshold and units returns false', function () {
+		const sut = rescheduleIfNeeded(alwaysTrue);
 
-      getRemainingUsage.mockReturnValue(100)
-      // simulate a start time 46 minutes in the past
-      const inThePast = moment().subtract(46, 'minutes').valueOf()
+		expect(sut()).toEqual(true);
+		expect(mocktask.create).not.toHaveBeenCalled();
+	});
 
-      const sut = governanceRemains(inThePast)
+	test('does not reschedule if governance exhausted (no parms)', () => {
+		const alwaysFalse = () => false;
 
-      expect(sut()).toEqual(false)
+		const sut = rescheduleIfNeeded(alwaysFalse);
 
-   })
+		expect(sut()).toEqual(false);
+		expect(mocktask.create).toHaveBeenCalled();
+	});
 
-   test('time remains should return true', function () {
+	test('passes script params when rescheduling', () => {
+		const alwaysFalse = () => false;
 
-      getRemainingUsage.mockReturnValue(1000)
-      // simulate a start time 30 minutes in the past - still has 15 minutes of time before the default 45 min limit
-      const inThePast = moment().subtract(30, 'minutes').valueOf()
+		const scriptParams = { foo: 'bar' };
+		const sut = rescheduleIfNeeded(alwaysFalse, scriptParams);
 
-      const sut = governanceRemains(inThePast)
-
-      expect(sut()).toEqual(true)
-   })
-})
-
-
-describe('rescheduling', function () {
-   test('should not reschedule if governance remains (no parms)', function () {
-
-      const alwaysTrue = () => true
-
-      const sut = rescheduleIfNeeded( alwaysTrue )
-
-      expect(sut()).toEqual(true)
-      expect(mocktask.create).not.toHaveBeenCalled()
-   })
-
-   test('does not reschedule if governance exhausted (no parms)', function () {
-
-      const alwaysFalse = () => false
-
-      const sut = rescheduleIfNeeded( alwaysFalse )
-
-      expect(sut()).toEqual(false)
-      expect(mocktask.create).toHaveBeenCalled()
-   })
-
-   test('passes script params when rescheduling', function () {
-
-      const alwaysFalse = () => false
-
-      let scriptParams = { foo: 'bar'}
-      const sut = rescheduleIfNeeded( alwaysFalse, scriptParams )
-
-      expect(sut()).toEqual(false)
-      // task.create() is called with our script params
-      expect(mocktask.create.mock.calls[0][0]).toEqual( expect.objectContaining({params: scriptParams }) )
-   })
-
+		expect(sut()).toEqual(false);
+		// task.create() is called with our script params
+		expect(mocktask.create.mock.calls[0][0]).toEqual(expect.objectContaining({ params: scriptParams }));
+	});
 });

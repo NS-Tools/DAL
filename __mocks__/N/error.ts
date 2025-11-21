@@ -1,2 +1,1 @@
-export const create = jest.fn()
-
+export const create = jest.fn();

@@ -1,19 +1,20 @@
 // the inventory item record in NetSuite
-import { FieldType } from '../Record'
-import * as record from 'N/record'
-import { Item } from './Item'
+
+import * as record from 'N/record';
+import { FieldType } from '../Record';
+import { Item } from './Item';
 
 /**
  * Netsuite Inventory Item record type
  */
 export class InventoryItemBase extends Item {
+	static override recordType() {
+		return record.Type.INVENTORY_ITEM;
+	}
 
-   static override recordType() { return record.Type.INVENTORY_ITEM }
+	@FieldType.checkbox
+	contingentrevenuehandling: boolean;
 
-   @FieldType.checkbox
-   contingentrevenuehandling: boolean
-
-
-   @FieldType.freeformtext
-   vendorname: string
+	@FieldType.freeformtext
+	vendorname: string;
 }

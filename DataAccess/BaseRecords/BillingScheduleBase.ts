@@ -1,70 +1,68 @@
-import { NetsuiteRecord, FieldType } from '../Record'
-import { Sublist, SublistFieldType, SublistLine } from '../Sublist'
-import * as record from 'N/record'
+import * as record from 'N/record';
+import { FieldType, NetsuiteRecord } from '../Record';
+import { type Sublist, SublistFieldType, SublistLine } from '../Sublist';
 
 export class Recurrence extends SublistLine {
-
 	@SublistFieldType.decimalnumber
-	amount: number
+	amount: number;
 
 	@SublistFieldType.freeformtext
-	amountText: string
+	amountText: string;
 
 	@SublistFieldType.integernumber
-	count: number
+	count: number;
 
 	@SublistFieldType.select
-	paymentterms: number
+	paymentterms: number;
 
 	@SublistFieldType.select
-	recurrenceid: number
+	recurrenceid: number;
 
 	@SublistFieldType.date
-	recurrencedate: Date
+	recurrencedate: Date;
 
 	@SublistFieldType.checkbox
-	relativetoprevious: boolean
+	relativetoprevious: boolean;
 
 	@SublistFieldType.select
-	units: number | string
-
+	units: number | string;
 }
 
 /**
  * NetSuite Billing Schedule Record type with custom fields.
  */
 export class BillingScheduleBase extends NetsuiteRecord {
-
 	@FieldType.freeformtext
-	name: string
+	name: string;
 
 	@FieldType.decimalnumber
-	initialamount: number
+	initialamount: number;
 
 	@FieldType.freeformtext
-	initialamountText: string
+	initialamountText: string;
 
 	@FieldType.select
-	initialterms: number
+	initialterms: number;
 
 	@FieldType.select
-	frequency: number | string
+	frequency: number | string;
 
 	@FieldType.select
-	repeatevery: number | string
+	repeatevery: number | string;
 
 	@FieldType.select
-	numberremaining: number
+	numberremaining: number;
 
 	@FieldType.checkbox
-	inarrears: boolean
+	inarrears: boolean;
 
 	@FieldType.select
-	recurrenceterms: number
+	recurrenceterms: number;
 
 	@FieldType.sublist(Recurrence)
-	recurrence: Sublist<Recurrence>
+	recurrence: Sublist<Recurrence>;
 
-	static override recordType () { return record.Type.BILLING_SCHEDULE}
-
+	static override recordType() {
+		return record.Type.BILLING_SCHEDULE;
+	}
 }

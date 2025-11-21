@@ -1,8 +1,6 @@
-export const getCurrentScript = jest.fn().mockName('getCurrentScript').mockReturnValue(
-   {
-      getRemainingUsage: jest.fn().mockName('getRemainingUsage')
-   }
-)
-
-
-
+export const getCurrentScript = jest
+	.fn()
+	.mockName('getCurrentScript')
+	.mockReturnValue({
+		getRemainingUsage: jest.fn().mockName('getRemainingUsage'),
+	});

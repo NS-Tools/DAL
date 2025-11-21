@@ -2,64 +2,63 @@
  * Represents a Cash Refund (cashrefund) transaction type in NetSuite
  */
 
-import { FieldType } from '../Record'
-import * as record from 'N/record'
-import { TransactionBase } from './Transaction'
-import { SublistFieldType, SublistLine } from '../Sublist'
+import * as record from 'N/record';
+import { FieldType } from '../Record';
+import { SublistFieldType, SublistLine } from '../Sublist';
+import { TransactionBase } from './Transaction';
 
 export class CashRefundBase extends TransactionBase {
+	static override recordType() {
+		return record.Type.CASH_REFUND;
+	}
 
-   static override recordType() { return record.Type.CASH_REFUND }
+	@FieldType.select
+	account: number;
 
-   @FieldType.select
-   account:number
+	@FieldType.checkbox
+	ccapproved: boolean;
 
-   @FieldType.checkbox
-   ccapproved:boolean
+	@FieldType.freeformtext
+	ccexpiredate: string;
 
-   @FieldType.freeformtext
-   ccexpiredate:string
+	@FieldType.freeformtext
+	ccname: string;
 
-   @FieldType.freeformtext
-   ccname:string
+	@FieldType.freeformtext
+	ccnumber: string;
 
-   @FieldType.freeformtext
-   ccnumber:string
+	@FieldType.select
+	paymentmethod: number;
 
-   @FieldType.select
-   paymentmethod:number
+	@FieldType.freeformtext
+	pnrefnum: string;
 
-   @FieldType.freeformtext
-   pnrefnum:string
-
-   @FieldType.currency
-   total:number
-
+	@FieldType.currency
+	total: number;
 }
 
 export class ItemSublist extends SublistLine {
+	@SublistFieldType.currency
+	amount: number;
 
-   @SublistFieldType.currency
-   amount:number
+	@SublistFieldType.select
+	item: number;
 
-   @SublistFieldType.select
-   item:number
+	@SublistFieldType.decimalnumber
+	quantity: number;
 
-   @SublistFieldType.decimalnumber
-   quantity:number
+	@SublistFieldType.date
+	revrecstartdate: Date;
 
-   @SublistFieldType.date
-   revrecstartdate:Date
+	@SublistFieldType.date
+	revrecenddate: Date;
 
-   @SublistFieldType.date
-   revrecenddate:Date
+	@SublistFieldType.decimalnumber
+	rate: number;
 
-   @SublistFieldType.decimalnumber
-   rate:number
+	@SublistFieldType.select
+	taxcode: number;
 
-   @SublistFieldType.select
-   taxcode:number
-
-   @SublistFieldType.decimalnumber
-   taxrate1:number
+	@SublistFieldType.decimalnumber
+	taxrate1: number;
 }

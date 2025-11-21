@@ -2,18 +2,17 @@
  * NS Base customer record - contains definitions for most of the built in fields
  */
 
-import { FieldType, NetsuiteRecord } from '../Record'
-import * as record from 'N/record'
-import { Sublist, SublistFieldType, SublistLine } from '../Sublist'
-import { AddressBase } from './AddressBase'
+import * as record from 'N/record';
+import { FieldType, NetsuiteRecord } from '../Record';
+import { type Sublist, SublistFieldType, SublistLine } from '../Sublist';
+import { AddressBase } from './AddressBase';
 
 /**
  * The address _sublist_ on customer records, not to be confused with the Address _subrecord_.
  * Customer address info is split between this sublist and the subrecord pointed to by the _addressbook_ field.
  */
 export class AddressSublist extends SublistLine {
-
-   /**
+	/**
     * The Address subrecord associated to this line
     *
     * Extend this class and override this property
@@ -29,207 +28,207 @@ export class AddressSublist extends SublistLine {
       addressbookaddress: MyCustomAddressClass
    }
     */
-   @SublistFieldType.subrecord(AddressBase)
-   addressbookaddress: AddressBase
+	@SublistFieldType.subrecord(AddressBase)
+	addressbookaddress: AddressBase;
 
-   @SublistFieldType.freeformtext
-   attention: string
+	@SublistFieldType.freeformtext
+	attention: string;
 
-   @SublistFieldType.checkbox
-   defaultbilling: boolean
+	@SublistFieldType.checkbox
+	defaultbilling: boolean;
 
-   @SublistFieldType.checkbox
-   defaultshipping: boolean
+	@SublistFieldType.checkbox
+	defaultshipping: boolean;
 
-   @SublistFieldType.freeformtext
-   displaystate: string
+	@SublistFieldType.freeformtext
+	displaystate: string;
 
-   @SublistFieldType.select
-   dropdownstate: number
+	@SublistFieldType.select
+	dropdownstate: number;
 
-   @SublistFieldType.integernumber
-   id: number
+	@SublistFieldType.integernumber
+	id: number;
 
-   @SublistFieldType.integernumber
-   internalid: number
+	@SublistFieldType.integernumber
+	internalid: number;
 
-   @SublistFieldType.checkbox
-   isresidential: boolean
+	@SublistFieldType.checkbox
+	isresidential: boolean;
 
-   @SublistFieldType.freeformtext
-   label: string
+	@SublistFieldType.freeformtext
+	label: string;
 
-   @SublistFieldType.checkbox
-   override: boolean
+	@SublistFieldType.checkbox
+	override: boolean;
 
-   @SublistFieldType.freeformtext
-   phone: string
+	@SublistFieldType.freeformtext
+	phone: string;
 
-   @SublistFieldType.freeformtext
-   state: string
+	@SublistFieldType.freeformtext
+	state: string;
 
-   @SublistFieldType.freeformtext
-   zip: string
+	@SublistFieldType.freeformtext
+	zip: string;
 }
 
 export enum CurrencySymbolPlacement {
-   BeforeNumber = 1,
-   AfterNumber = 2,
+	BeforeNumber = 1,
+	AfterNumber = 2,
 }
 
 export class CurrencySublist extends SublistLine {
+	@SublistFieldType.currency
+	readonly balance: number;
 
-   @SublistFieldType.currency
-   readonly balance: number
+	@SublistFieldType.currency
+	readonly consolbalance: number;
 
-   @SublistFieldType.currency
-   readonly consolbalance: number
+	@SublistFieldType.currency
+	readonly consoldepositbalance: number;
 
-   @SublistFieldType.currency
-   readonly consoldepositbalance: number
+	@SublistFieldType.currency
+	readonly consoloverduebalance: number;
 
-   @SublistFieldType.currency
-   readonly consoloverduebalance: number
+	@SublistFieldType.currency
+	readonly consolunbilledorders: number;
 
-   @SublistFieldType.currency
-   readonly consolunbilledorders: number
+	@SublistFieldType.select
+	currency: number;
 
-   @SublistFieldType.select
-   currency: number
+	@SublistFieldType.freeformtext
+	readonly currencyformatsample: string;
 
-   @SublistFieldType.freeformtext
-   readonly currencyformatsample: string
+	@SublistFieldType.currency
+	readonly depositbalance: number;
 
-   @SublistFieldType.currency
-   readonly depositbalance: number
+	@SublistFieldType.freeformtext
+	displaysymbol: string;
 
-   @SublistFieldType.freeformtext
-   displaysymbol: string
+	@SublistFieldType.currency
+	readonly overduebalance: number;
 
-   @SublistFieldType.currency
-   readonly overduebalance: number
+	@SublistFieldType.checkbox
+	overridecurrencyformat: boolean;
 
-   @SublistFieldType.checkbox
-   overridecurrencyformat: boolean
+	@SublistFieldType.select
+	symbolplacement: CurrencySymbolPlacement;
 
-   @SublistFieldType.select
-   symbolplacement: CurrencySymbolPlacement
-
-   @SublistFieldType.currency
-   readonly unbilledorders: number
+	@SublistFieldType.currency
+	readonly unbilledorders: number;
 }
 
 export class CustomerBase extends NetsuiteRecord {
-   static override recordType() { return record.Type.CUSTOMER }
+	static override recordType() {
+		return record.Type.CUSTOMER;
+	}
 
-   @FieldType.freeformtext
-   accountnumber: string
+	@FieldType.freeformtext
+	accountnumber: string;
 
-   @FieldType.select
-   category: number
+	@FieldType.select
+	category: number;
 
-   @FieldType.textarea
-   comments: string
+	@FieldType.textarea
+	comments: string;
 
-   @FieldType.freeformtext
-   companyname: string
+	@FieldType.freeformtext
+	companyname: string;
 
-   @FieldType.select
-   currency: number
+	@FieldType.select
+	currency: number;
 
-   @FieldType.select
-   customform: number
+	@FieldType.select
+	customform: number;
 
-   @FieldType.datetime
-   datecreated: Date
+	@FieldType.datetime
+	datecreated: Date;
 
-   @FieldType.email
-   email: string
+	@FieldType.email
+	email: string;
 
-   @FieldType.freeformtext
-   entityid: string
+	@FieldType.freeformtext
+	entityid: string;
 
-   @FieldType.select
-   entitystatus: number
+	@FieldType.select
+	entitystatus: number;
 
-   @FieldType.freeformtext
-   externalid: string
+	@FieldType.freeformtext
+	externalid: string;
 
-   @FieldType.freeformtext
-   fax: string
+	@FieldType.freeformtext
+	fax: string;
 
-   @FieldType.freeformtext
-   firstname: string
+	@FieldType.freeformtext
+	firstname: string;
 
-   @FieldType.checkbox
-   isinactive: boolean
+	@FieldType.checkbox
+	isinactive: boolean;
 
-   @FieldType.freeformtext
-   isperson: 'T' | 'F'
+	@FieldType.freeformtext
+	isperson: 'T' | 'F';
 
-   @FieldType.datetime
-   lastmodifieddate: Date
+	@FieldType.datetime
+	lastmodifieddate: Date;
 
-   @FieldType.select
-   language: number
+	@FieldType.select
+	language: number;
 
-   @FieldType.freeformtext
-   lastname: string
+	@FieldType.freeformtext
+	lastname: string;
 
-   @FieldType.select
-   parent: number
+	@FieldType.select
+	parent: number;
 
-   @FieldType.freeformtext
-   phone: string
+	@FieldType.freeformtext
+	phone: string;
 
-   @FieldType.select
-   pricelevel: number
-   
-   @FieldType.select
-   salesrep: number
+	@FieldType.select
+	pricelevel: number;
 
-   @FieldType.select
-   subsidiary: number
+	@FieldType.select
+	salesrep: number;
 
-   @FieldType.checkbox
-   taxable: boolean
+	@FieldType.select
+	subsidiary: number;
 
-   @FieldType.select
-   taxitem: number
+	@FieldType.checkbox
+	taxable: boolean;
 
-   @FieldType.select
-   terms: number
+	@FieldType.select
+	taxitem: number;
 
-   @FieldType.sublist(AddressSublist)
-   addressbook: Sublist<AddressSublist>
+	@FieldType.select
+	terms: number;
 
-   @FieldType.sublist(CurrencySublist)
-   currencySublist: Sublist<CurrencySublist>
+	@FieldType.sublist(AddressSublist)
+	addressbook: Sublist<AddressSublist>;
+
+	@FieldType.sublist(CurrencySublist)
+	currencySublist: Sublist<CurrencySublist>;
 }
 
 export class ContactsSublist extends SublistLine {
+	@SublistFieldType.select
+	contact: number;
 
-   @SublistFieldType.select
-   contact: number
+	@SublistFieldType.email
+	email: string;
 
-   @SublistFieldType.email
-   email: string
+	@SublistFieldType.checkbox
+	giveaccess: boolean;
 
-   @SublistFieldType.checkbox
-   giveaccess: boolean
+	@SublistFieldType.checkbox
+	passwordconfirm: boolean;
 
-   @SublistFieldType.checkbox
-   passwordconfirm: boolean
+	@SublistFieldType.select
+	role: number;
 
-   @SublistFieldType.select
-   role: number
+	@SublistFieldType.checkbox
+	sendemail: boolean;
 
-   @SublistFieldType.checkbox
-   sendemail: boolean
-
-   /**
-    * Password strength
-    */
-   @SublistFieldType.freeformtext
-   strength: string
+	/**
+	 * Password strength
+	 */
+	@SublistFieldType.freeformtext
+	strength: string;
 }

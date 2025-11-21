@@ -1,167 +1,166 @@
-import { FieldType, NetsuiteRecord } from '../Record'
+import { FieldType, NetsuiteRecord } from '../Record';
 
 /**
  * Base class with fields common to all item types
  */
 export class Item extends NetsuiteRecord {
+	@FieldType.checkbox
+	autoleadtime: boolean;
 
-   @FieldType.checkbox
-   autoleadtime: boolean
+	@FieldType.checkbox
+	autopreferredstocklevel: boolean;
 
-   @FieldType.checkbox
-   autopreferredstocklevel: boolean
+	@FieldType.checkbox
+	availabletopartners: boolean;
 
-   @FieldType.checkbox
-   availabletopartners: boolean
+	@FieldType.select
+	assetaccount: number;
 
-   @FieldType.select
-   assetaccount: number
+	@FieldType.select
+	atpmethod: number;
 
-   @FieldType.select
-   atpmethod: number
+	@FieldType.currency
+	averagecost: number;
 
-   @FieldType.currency
-   averagecost: number
+	@FieldType.select
+	billingschedule: number;
 
-   @FieldType.select
-   billingschedule: number
+	@FieldType.select
+	billpricevariantacct: number;
 
-   @FieldType.select
-   billpricevariantacct: number
+	@FieldType.select
+	class: number;
 
-   @FieldType.select
-   class: number
+	@FieldType.select
+	cogsaccount: number;
 
-   @FieldType.select
-   cogsaccount: number
+	@FieldType.select
+	consumptionunit: number;
 
-   @FieldType.select
-   consumptionunit: number
+	@FieldType.checkbox
+	copydescription: boolean;
 
-   @FieldType.checkbox
-   copydescription:boolean
+	@FieldType.currency
+	cost: number;
 
-   @FieldType.currency
-   cost:number
+	@FieldType.select
+	costcategory: number;
 
-   @FieldType.select
-   costcategory:number
+	@FieldType.select
+	costingmethod: number;
 
-   @FieldType.select
-   costingmethod:number
+	/**
+	 * This is a 'select' field according to records browser but actually requires the two character country code
+	 * for values.
+	 */
+	@FieldType.select
+	countryofmanufacture: string;
 
-   /**
-    * This is a 'select' field according to records browser but actually requires the two character country code
-    * for values.
-    */
-   @FieldType.select
-   countryofmanufacture: string
+	@FieldType.datetime
+	createddate: Date;
 
-   @FieldType.datetime
-   createddate: Date
+	@FieldType.select
+	customform: number;
 
-   @FieldType.select
-   customform: number
+	@FieldType.select
+	deferredrevenueaccount: number;
 
-   @FieldType.select
-   deferredrevenueaccount:number
+	@FieldType.checkbox
+	deferrevrec: boolean;
 
-   @FieldType.checkbox
-   deferrevrec:boolean
+	@FieldType.select
+	department: number;
 
-   @FieldType.select
-   department: number
+	@FieldType.textarea
+	description: string;
 
-   @FieldType.textarea
-   description:string
+	@FieldType.freeformtext
+	displayname: string;
 
-   @FieldType.freeformtext
-   displayname:string
+	@FieldType.freeformtext
+	externalid: string;
 
-   @FieldType.freeformtext
-   externalid: string
+	@FieldType.checkbox
+	includechildren: boolean;
 
-   @FieldType.checkbox
-   includechildren:boolean
+	@FieldType.select
+	incomeaccount: number;
 
-   @FieldType.select
-   incomeaccount:number
+	@FieldType.checkbox
+	isdonationitem: boolean;
 
-   @FieldType.checkbox
-   isdonationitem:boolean
+	@FieldType.checkbox
+	isdropshipitem: boolean;
 
-   @FieldType.checkbox
-   isdropshipitem:boolean
+	@FieldType.checkbox
+	isgcocompliant: boolean;
 
-   @FieldType.checkbox
-   isgcocompliant:boolean
+	@FieldType.checkbox
+	isinactive: boolean;
 
-   @FieldType.checkbox
-   isinactive:boolean
+	@FieldType.checkbox
+	isonline: boolean;
 
-   @FieldType.checkbox
-   isonline:boolean
+	@FieldType.checkbox
+	isspecialorderitem: boolean;
 
-   @FieldType.checkbox
-   isspecialorderitem:boolean
+	@FieldType.checkbox
+	isstorepickupallowed: boolean;
 
-   @FieldType.checkbox
-   isstorepickupallowed:boolean
+	@FieldType.select
+	itemcondition: number;
 
-   @FieldType.select
-   itemcondition:number
+	@FieldType.freeformtext
+	itemid: string;
 
-   @FieldType.freeformtext
-   itemid:string
+	@FieldType.select
+	itemoptions: number;
 
-   @FieldType.select
-   itemoptions:number
+	@FieldType.freeformtext
+	itemtype: string;
 
-   @FieldType.freeformtext
-   itemtype:string
+	@FieldType.datetime
+	lastmodifieddate: Date;
 
-   @FieldType.datetime
-   lastmodifieddate: Date
+	@FieldType.select
+	location: number;
 
-   @FieldType.select
-   location: number
+	@FieldType.select
+	parent: number;
 
-   @FieldType.select
-   parent:number
+	@FieldType.freeformtext
+	purchasedescription: string;
 
-   @FieldType.freeformtext
-   purchasedescription: string
+	@FieldType.select
+	revrecschedule: number;
 
-   @FieldType.select
-   revrecschedule: number
+	@FieldType.select
+	subsidiary: number;
 
-   @FieldType.select
-   subsidiary: number
+	@FieldType.freeformtext
+	upccode: string;
 
-   @FieldType.freeformtext
-   upccode: string
+	@FieldType.select
+	taxschedule: number;
 
-   @FieldType.select
-   taxschedule: number
+	@FieldType.checkbox
+	tracklandedcost: boolean;
 
-   @FieldType.checkbox
-   tracklandedcost: boolean
+	@FieldType.freeformtext
+	tranid: string;
 
-   @FieldType.freeformtext
-   tranid: string
+	@FieldType.select
+	units: number;
 
-   @FieldType.select
-   units: number
+	@FieldType.select
+	unitstype: number;
 
-   @FieldType.select
-   unitstype: number
+	@FieldType.checkbox
+	usebins: boolean;
 
-   @FieldType.checkbox
-   usebins:boolean
+	@FieldType.float
+	weight: number;
 
-   @FieldType.float
-   weight:number
-
-   @FieldType.select
-   weightunit:number
+	@FieldType.select
+	weightunit: number;
 }

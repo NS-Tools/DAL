@@ -1,78 +1,78 @@
-import { NetsuiteRecord, FieldType } from '../Record'
-import { Sublist, SublistFieldType, SublistLine } from '../Sublist'
-import { ItemPricingBase } from './ItemPricingBase'
-import * as record from 'N/record'
+import * as record from 'N/record';
+import { FieldType, NetsuiteRecord } from '../Record';
+import { type Sublist, SublistFieldType, SublistLine } from '../Sublist';
+import { ItemPricingBase } from './ItemPricingBase';
 
 export class ItemSublist extends SublistLine {
-
 	@SublistFieldType.select
-	item: number
+	item: number;
 
 	@SublistFieldType.freeformtext
-	itemText: string
+	itemText: string;
 
 	@SublistFieldType.currency
-	rate: number
+	rate: number;
 
 	@SublistFieldType.currency
-	origrate: number
+	origrate: number;
 
 	@SublistFieldType.decimalnumber
-	quantity: number
+	quantity: number;
 
 	@SublistFieldType.textarea
-	description: string
+	description: string;
 
 	@SublistFieldType.checkbox
-	itempricingset: boolean
+	itempricingset: boolean;
 
 	@SublistFieldType.subrecord(ItemPricingBase)
-	itempricing: ItemPricingBase
+	itempricing: ItemPricingBase;
 }
 
 /**
  * NetSuite Purchase Contract Record type with custom fields.
  */
 export class PurchaseContractBase extends NetsuiteRecord {
-	static override recordType () { return record.Type.PURCHASE_CONTRACT }
+	static override recordType() {
+		return record.Type.PURCHASE_CONTRACT;
+	}
 
 	@FieldType.date
-	trandate: Date
+	trandate: Date;
 
 	@FieldType.select
-	entity: number
+	entity: number;
 
 	@FieldType.freeformtext
-	memo: string
+	memo: string;
 
 	@FieldType.freeformtext
-	externalid: string
+	externalid: string;
 
 	@FieldType.select
-	subsidiary: number
+	subsidiary: number;
 
 	@FieldType.select
-	currency: number
+	currency: number;
 
 	@FieldType.freeformtext
-	effectivitybasedon: string
+	effectivitybasedon: string;
 
 	@FieldType.date
-	startdate: Date
+	startdate: Date;
 
 	@FieldType.date
-	enddate: Date
+	enddate: Date;
 
 	@FieldType.currency
-	minimumamount: number
+	minimumamount: number;
 
 	@FieldType.currency
-	maximumamount: number
+	maximumamount: number;
 
 	@FieldType.checkbox
-	updateitemvendor: boolean
+	updateitemvendor: boolean;
 
 	@FieldType.sublist(ItemSublist)
-	item: Sublist<ItemSublist>
-
+	item: Sublist<ItemSublist>;
 }

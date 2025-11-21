@@ -1,47 +1,49 @@
 /**
  * NetSuite Email Template Record Type
  */
-import {FieldType, NetsuiteRecord} from '../Record'
+import { FieldType, NetsuiteRecord } from '../Record';
 
 /**
  * NetSuite Email Template Record Type (emailtemplate)
  */
 export class EmailTemplate extends NetsuiteRecord {
-   static override recordType() { return 'emailtemplate' }
+	static override recordType() {
+		return 'emailtemplate';
+	}
 
-   @FieldType.checkbox
-   addcompanyaddress: boolean
+	@FieldType.checkbox
+	addcompanyaddress: boolean;
 
-   @FieldType.checkbox
-   addunsubscribelink: boolean
+	@FieldType.checkbox
+	addunsubscribelink: boolean;
 
-   @FieldType.select
-   campaigndomain: number
+	@FieldType.select
+	campaigndomain: number;
 
-   @FieldType.textarea
-   content: string
+	@FieldType.textarea
+	content: string;
 
-   @FieldType.textarea
-   description: string
+	@FieldType.textarea
+	description: string;
 
-   @FieldType.freeformtext
-   externalid: string
+	@FieldType.freeformtext
+	externalid: string;
 
-   @FieldType.checkbox
-   isinactive: boolean
+	@FieldType.checkbox
+	isinactive: boolean;
 
-   @FieldType.checkbox
-   isprivate: boolean
+	@FieldType.checkbox
+	isprivate: boolean;
 
-   @FieldType.select
-   mediaitem: number
+	@FieldType.select
+	mediaitem: number;
 
-   @FieldType.freeformtext
-   name: string
+	@FieldType.freeformtext
+	name: string;
 
-   @FieldType.select
-   restricttogroup: number
+	@FieldType.select
+	restricttogroup: number;
 
-   @FieldType.freeformtext
-   subject: string
+	@FieldType.freeformtext
+	subject: string;
 }

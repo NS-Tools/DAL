@@ -1,41 +1,41 @@
-import { NetsuiteRecord, FieldType } from '../Record'
-import * as record from 'N/record'
+import * as record from 'N/record';
+import { FieldType, NetsuiteRecord } from '../Record';
 
 /**
  * NetSuite Billing Revenue Event Record type with custom fields.
  */
 export class BillingRevenueEventBase extends NetsuiteRecord {
-
-	static override recordType () { return record.Type.BILLING_REVENUE_EVENT }
+	static override recordType() {
+		return record.Type.BILLING_REVENUE_EVENT;
+	}
 
 	@FieldType.select
-	transactionline: number
+	transactionline: number;
 
 	@FieldType.freeformtext
-	transactionlineText: string
+	transactionlineText: string;
 
 	@FieldType.select
-	projectrevenuerule: number
+	projectrevenuerule: number;
 
 	@FieldType.select
-	eventtype: number
+	eventtype: number;
 
 	@FieldType.freeformtext
-	eventtypeText: string
+	eventtypeText: string;
 
 	@FieldType.select
-	eventpurpose: number
+	eventpurpose: number;
 
 	@FieldType.freeformtext
-	eventpurposeText: string
+	eventpurposeText: string;
 
 	@FieldType.date
-	eventdate: Date
+	eventdate: Date;
 
 	@FieldType.decimalnumber
-	quantity: number
+	quantity: number;
 
 	@FieldType.decimalnumber
-	amount: number
-
+	amount: number;
 }

@@ -2,18 +2,17 @@
  * Represents a Contact (contact) record type in NetSuite
  */
 
-import { FieldType, NetsuiteRecord } from '../Record'
-import * as record from 'N/record'
-import { SublistLine, SublistFieldType, Sublist } from '../Sublist'
-import { AddressBase } from './AddressBase'
+import * as record from 'N/record';
+import { FieldType, NetsuiteRecord } from '../Record';
+import { type Sublist, SublistFieldType, SublistLine } from '../Sublist';
+import { AddressBase } from './AddressBase';
 
 /**
  * The address _sublist_ (addressbook) on Contact records, not to be confused with the Address _subrecord_.
  * Contact address info is split between this sublist and the subrecord pointed to by the _addressbookaddress_ field.
  */
 export class AddressSublist extends SublistLine {
-
-   /**
+	/**
     * The Address subrecord associated to this line
     *
     * Extend this class and override this property
@@ -29,170 +28,171 @@ export class AddressSublist extends SublistLine {
       addressbookaddress: MyCustomAddressClass
    }
     */
-   @SublistFieldType.subrecord(AddressBase)
-   addressbookaddress: AddressBase
+	@SublistFieldType.subrecord(AddressBase)
+	addressbookaddress: AddressBase;
 
-   @SublistFieldType.freeformtext
-   addressid: string
+	@SublistFieldType.freeformtext
+	addressid: string;
 
-   @SublistFieldType.longtext
-   addrtext: string
+	@SublistFieldType.longtext
+	addrtext: string;
 
-   @SublistFieldType.freeformtext
-   attention: string
+	@SublistFieldType.freeformtext
+	attention: string;
 
-   @SublistFieldType.freeformtext
-   city: string
+	@SublistFieldType.freeformtext
+	city: string;
 
-   @SublistFieldType.freeformtext
-   country: string
+	@SublistFieldType.freeformtext
+	country: string;
 
-   @SublistFieldType.checkbox
-   defaultbilling: boolean
+	@SublistFieldType.checkbox
+	defaultbilling: boolean;
 
-   @SublistFieldType.checkbox
-   defaultshipping: boolean
+	@SublistFieldType.checkbox
+	defaultshipping: boolean;
 
-   @SublistFieldType.freeformtext
-   displaystate: string
+	@SublistFieldType.freeformtext
+	displaystate: string;
 
-   @SublistFieldType.integernumber
-   id: number
+	@SublistFieldType.integernumber
+	id: number;
 
-   @SublistFieldType.integernumber
-   internalid: number
+	@SublistFieldType.integernumber
+	internalid: number;
 
-   @SublistFieldType.freeformtext
-   label: string
+	@SublistFieldType.freeformtext
+	label: string;
 
-   @SublistFieldType.checkbox
-   override: boolean
+	@SublistFieldType.checkbox
+	override: boolean;
 
-   @SublistFieldType.freeformtext
-   phone: string
+	@SublistFieldType.freeformtext
+	phone: string;
 
-   @SublistFieldType.freeformtext
-   state: string
+	@SublistFieldType.freeformtext
+	state: string;
 
-   @SublistFieldType.freeformtext
-   zip: string
+	@SublistFieldType.freeformtext
+	zip: string;
 }
 
 /**
  * Contact Base Type
  */
 export class ContactBase extends NetsuiteRecord {
+	static override recordType() {
+		return record.Type.CONTACT;
+	}
 
-   static override recordType() { return record.Type.CONTACT }
+	@FieldType.email
+	altemail: string;
 
-   @FieldType.email
-   altemail: string
+	@FieldType.select
+	assistant: number;
 
-   @FieldType.select
-   assistant: number
+	@FieldType.freeformtext
+	assistantphone: string;
 
-   @FieldType.freeformtext
-   assistantphone: string
+	@FieldType.select
+	category: number;
 
-   @FieldType.select
-   category: number
+	@FieldType.textarea
+	comments: string;
 
-   @FieldType.textarea
-   comments: string
+	@FieldType.select
+	company: number;
 
-   @FieldType.select
-   company: number
+	@FieldType.integernumber
+	contactrole: number;
 
-   @FieldType.integernumber
-   contactrole: number
+	@FieldType.select
+	contactsource: number;
 
-   @FieldType.select
-   contactsource: number
+	@FieldType.select
+	customform: number;
 
-   @FieldType.select
-   customform: number
+	@FieldType.datetime
+	datecreated: Date;
 
-   @FieldType.datetime
-   datecreated: Date
+	@FieldType.address
+	defaultaddress: string;
 
-   @FieldType.address
-   defaultaddress: string
+	@FieldType.email
+	email: string;
 
-   @FieldType.email
-   email: string
+	@FieldType.freeformtext
+	entityid: string;
 
-   @FieldType.freeformtext
-   entityid: string
+	@FieldType.freeformtext
+	externalid: string;
 
-   @FieldType.freeformtext
-   externalid: string
+	@FieldType.freeformtext
+	fax: string;
 
-   @FieldType.freeformtext
-   fax: string
+	@FieldType.freeformtext
+	firstname: string;
 
-   @FieldType.freeformtext
-   firstname: string
+	@FieldType.select
+	globalsubscriptionstatus: number;
 
-   @FieldType.select
-   globalsubscriptionstatus: number
+	@FieldType.freeformtext
+	homephone: string;
 
-   @FieldType.freeformtext
-   homephone: string
+	@FieldType.select
+	image: number;
 
-   @FieldType.select
-   image: number
+	@FieldType.checkbox
+	isinactive: boolean;
 
-   @FieldType.checkbox
-   isinactive: boolean
+	@FieldType.checkbox
+	isprivate: boolean;
 
-   @FieldType.checkbox
-   isprivate: boolean
+	@FieldType.datetime
+	lastmodifieddate: Date;
 
-   @FieldType.datetime
-   lastmodifieddate: Date
+	@FieldType.freeformtext
+	lastname: string;
 
-   @FieldType.freeformtext
-   lastname: string
+	@FieldType.freeformtext
+	middlename: string;
 
-   @FieldType.freeformtext
-   middlename: string
+	@FieldType.freeformtext
+	mobilephone: string;
 
-   @FieldType.freeformtext
-   mobilephone: string
+	@FieldType.freeformtext
+	officephone: string;
 
-   @FieldType.freeformtext
-   officephone: string
+	@FieldType.multiselect
+	otherrelationships: number[];
 
-   @FieldType.multiselect
-   otherrelationships: number[]
+	@FieldType.integernumber
+	owner: number;
 
-   @FieldType.integernumber
-   owner: number
+	@FieldType.freeformtext
+	phone: string;
 
-   @FieldType.freeformtext
-   phone: string
+	@FieldType.freeformtext
+	phoneticname: string;
 
-   @FieldType.freeformtext
-   phoneticname: string
+	@FieldType.freeformtext
+	salutation: string;
 
-   @FieldType.freeformtext
-   salutation: string
+	@FieldType.select
+	subsidiary: number;
 
-   @FieldType.select
-   subsidiary: number
+	@FieldType.select
+	supervisor: number;
 
-   @FieldType.select
-   supervisor: number
+	@FieldType.freeformtext
+	supervisorphone: string;
 
-   @FieldType.freeformtext
-   supervisorphone: string
+	@FieldType.freeformtext
+	title: string;
 
-   @FieldType.freeformtext
-   title: string
+	@FieldType.select
+	unsubscribe: number;
 
-   @FieldType.select
-   unsubscribe: number
-
-   @FieldType.sublist(AddressSublist)
-   addressbook: Sublist<AddressSublist>
+	@FieldType.sublist(AddressSublist)
+	addressbook: Sublist<AddressSublist>;
 }

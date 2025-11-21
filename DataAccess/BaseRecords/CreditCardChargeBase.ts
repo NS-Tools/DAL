@@ -1,247 +1,244 @@
 /**
  * NetSuite Credit Card Charge Record
  */
-import * as record from 'N/record'
-import { TransactionBase } from './Transaction'
-import { SublistFieldType, SublistLine } from '../Sublist'
-import { FieldType } from '../Record'
+import * as record from 'N/record';
+import { FieldType } from '../Record';
+import { SublistFieldType, SublistLine } from '../Sublist';
+import { TransactionBase } from './Transaction';
 
 /**
  * NetSuite Credit Card Charge Record
  */
 export class CreditCardChargeBase extends TransactionBase {
-   static override recordType() { return record.Type.CREDIT_CARD_CHARGE as const }
+	static override recordType() {
+		return record.Type.CREDIT_CARD_CHARGE as const;
+	}
 
-   @FieldType.select
-   account: number
+	@FieldType.select
+	account: number;
 
-   @FieldType.currency
-   balance: number
+	@FieldType.currency
+	balance: number;
 
-   @FieldType.select
-   class: number
+	@FieldType.select
+	class: number;
 
-   @FieldType.checkbox
-   cleared: boolean
+	@FieldType.checkbox
+	cleared: boolean;
 
-   @FieldType.date
-   cleareddate: Date
+	@FieldType.date
+	cleareddate: Date;
 
-   @FieldType.datetime
-   createddate: Date
+	@FieldType.datetime
+	createddate: Date;
 
-   @FieldType.select
-   currency: number
+	@FieldType.select
+	currency: number;
 
-   @FieldType.freeformtext
-   currencyname: string
+	@FieldType.freeformtext
+	currencyname: string;
 
-   @FieldType.freeformtext
-   currencysymbol: string
+	@FieldType.freeformtext
+	currencysymbol: string;
 
-   @FieldType.select
-   customform: number
+	@FieldType.select
+	customform: number;
 
-   @FieldType.select
-   department: number
+	@FieldType.select
+	department: number;
 
-   @FieldType.select
-   entity: number
+	@FieldType.select
+	entity: number;
 
-   @FieldType.freeformtext
-   entity_nexus_country: string
+	@FieldType.freeformtext
+	entity_nexus_country: string;
 
-   @FieldType.select
-   entitynexus: number
+	@FieldType.select
+	entitynexus: number;
 
-   @FieldType.currency
-   exchangerate: number
+	@FieldType.currency
+	exchangerate: number;
 
-   @FieldType.freeformtext
-   externalid: string
+	@FieldType.freeformtext
+	externalid: string;
 
-   @FieldType.checkbox
-   isbasecurrency: boolean
+	@FieldType.checkbox
+	isbasecurrency: boolean;
 
-   @FieldType.datetime
-   lastmodifieddate: Date
+	@FieldType.datetime
+	lastmodifieddate: Date;
 
-   @FieldType.select
-   location: number
+	@FieldType.select
+	location: number;
 
-   @FieldType.freeformtext
-   memo: string
+	@FieldType.freeformtext
+	memo: string;
 
-   @FieldType.select
-   nexus: number
+	@FieldType.select
+	nexus: number;
 
-   @FieldType.freeformtext
-   nexus_country: string
+	@FieldType.freeformtext
+	nexus_country: string;
 
-   @FieldType.select
-   postingperiod: number
+	@FieldType.select
+	postingperiod: number;
 
-   @FieldType.select
-   subsidiary: number
+	@FieldType.select
+	subsidiary: number;
 
-   @FieldType.freeformtext
-   taxperiod: string
+	@FieldType.freeformtext
+	taxperiod: string;
 
-   @FieldType.date
-   taxpointdate: Date
+	@FieldType.date
+	taxpointdate: Date;
 
-   @FieldType.checkbox
-   taxpointdateoverride: boolean
+	@FieldType.checkbox
+	taxpointdateoverride: boolean;
 
-   @FieldType.currency
-   total: number
+	@FieldType.currency
+	total: number;
 
-   @FieldType.date
-   trandate: Date
+	@FieldType.date
+	trandate: Date;
 
-   @FieldType.freeformtext
-   tranid: string
+	@FieldType.freeformtext
+	tranid: string;
 
-   @FieldType.freeformtext
-   transactionnumber: string
+	@FieldType.freeformtext
+	transactionnumber: string;
 
-   @FieldType.radio
-   trantype: boolean
+	@FieldType.radio
+	trantype: boolean;
 
-   @FieldType.freeformtext
-   updatecurrency: string
+	@FieldType.freeformtext
+	updatecurrency: string;
 
-   @FieldType.currency
-   usertotal: number
-
+	@FieldType.currency
+	usertotal: number;
 }
 /**
  * Sublist 'item' on Credit Card Charges
  */
 export class ItemSublist extends SublistLine {
+	@SublistFieldType.currency
+	amount: number;
 
-   @SublistFieldType.currency
-   amount: number
+	@SublistFieldType.freeformtext
+	billvariancestatus: string;
 
-   @SublistFieldType.freeformtext
-   billvariancestatus: string
+	@SublistFieldType.select
+	catchupperiod: number;
 
-   @SublistFieldType.select
-   catchupperiod: number
+	@SublistFieldType.select
+	class: number;
 
-   @SublistFieldType.select
-   class: number
+	@SublistFieldType.select
+	customer: number;
 
-   @SublistFieldType.select
-   customer: number
+	@SublistFieldType.checkbox
+	deferrevrec: boolean;
 
-   @SublistFieldType.checkbox
-   deferrevrec: boolean
+	@SublistFieldType.select
+	department: number;
 
-   @SublistFieldType.select
-   department: number
+	@SublistFieldType.freeformtext
+	description: string;
 
-   @SublistFieldType.freeformtext
-   description: string
+	@SublistFieldType.freeformtext
+	id: string;
 
-   @SublistFieldType.freeformtext
-   id: string
+	@SublistFieldType.checkbox
+	isbillable: boolean;
 
-   @SublistFieldType.checkbox
-   isbillable: boolean
+	@SublistFieldType.freeformtext
+	isvsoebundle: string;
 
-   @SublistFieldType.freeformtext
-   isvsoebundle: string
+	@SublistFieldType.select
+	item: number;
 
-   @SublistFieldType.select
-   item: number
+	@SublistFieldType.freeformtext
+	itemsubtype: string;
 
-   @SublistFieldType.freeformtext
-   itemsubtype: string
+	@SublistFieldType.freeformtext
+	itemtype: string;
 
-   @SublistFieldType.freeformtext
-   itemtype: string
+	@SublistFieldType.freeformtext
+	line: string;
 
-   @SublistFieldType.freeformtext
-   line: string
+	@SublistFieldType.integernumber
+	linenumber: number;
 
-   @SublistFieldType.integernumber
-   linenumber: number
+	@SublistFieldType.freeformtext
+	linked: string;
 
-   @SublistFieldType.freeformtext
-   linked: string
+	@SublistFieldType.select
+	location: number;
 
-   @SublistFieldType.select
-   location: number
+	@SublistFieldType.freeformtext
+	matrixtype: string;
 
-   @SublistFieldType.freeformtext
-   matrixtype: string
+	@SublistFieldType.namevaluelist
+	options: string;
 
-   @SublistFieldType.namevaluelist
-   options: string
+	@SublistFieldType.freeformtext
+	printitems: string;
 
-   @SublistFieldType.freeformtext
-   printitems: string
+	@SublistFieldType.float
+	quantity: number;
 
-   @SublistFieldType.float
-   quantity: number
+	@SublistFieldType.rate
+	rate: number;
 
-   @SublistFieldType.rate
-   rate: number
+	@SublistFieldType.freeformtext
+	rateschedule: string;
 
-   @SublistFieldType.freeformtext
-   rateschedule: string
-
-   @SublistFieldType.freeformtext
-   vendorname: string
-
+	@SublistFieldType.freeformtext
+	vendorname: string;
 }
 /**
  * Sublist 'expense' on Credit Card Charges
  */
-export  class ExpenseSublist extends SublistLine {
+export class ExpenseSublist extends SublistLine {
+	@SublistFieldType.select
+	account: number;
 
-   @SublistFieldType.select
-   account: number
+	@SublistFieldType.currency
+	amount: number;
 
-   @SublistFieldType.currency
-   amount: number
+	@SublistFieldType.freeformtext
+	category: string;
 
-   @SublistFieldType.freeformtext
-   category: string
+	@SublistFieldType.select
+	class: number;
 
-   @SublistFieldType.select
-   class: number
+	@SublistFieldType.select
+	customer: number;
 
-   @SublistFieldType.select
-   customer: number
+	@SublistFieldType.select
+	department: number;
 
-   @SublistFieldType.select
-   department: number
+	@SublistFieldType.integernumber
+	expenseitem: number;
 
-   @SublistFieldType.integernumber
-   expenseitem: number
+	@SublistFieldType.checkbox
+	isbillable: boolean;
 
-   @SublistFieldType.checkbox
-   isbillable: boolean
+	@SublistFieldType.integernumber
+	line: number;
 
-   @SublistFieldType.integernumber
-   line: number
+	@SublistFieldType.select
+	location: number;
 
-   @SublistFieldType.select
-   location: number
+	@SublistFieldType.freeformtext
+	memo: string;
 
-   @SublistFieldType.freeformtext
-   memo: string
-
-   @SublistFieldType.integernumber
-   numrules: number
+	@SublistFieldType.integernumber
+	numrules: number;
 }
 /**
  * Sublist 'reimbursements' on Credit Card Charges
  */
 export class ReimbursementsSublist extends SublistLine {
-
-   @SublistFieldType.freeformtext
-   id: string
+	@SublistFieldType.freeformtext
+	id: string;
 }

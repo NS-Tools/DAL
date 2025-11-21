@@ -1,5 +1,3 @@
-import { VendorPaymentBase } from '../NFT-SS2-8.0.1/DataAccess/VendorPaymentBase'
+import { VendorPaymentBase } from '../NFT-SS2-8.0.1/DataAccess/VendorPaymentBase';
 
-export class VendorPayment extends VendorPaymentBase {
-
-}
+export class VendorPayment extends VendorPaymentBase {}

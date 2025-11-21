@@ -1,67 +1,69 @@
-import { FieldType } from '../Record'
-import { Sublist, SublistFieldType, SublistLine } from '../Sublist'
-import { TransactionBase } from './Transaction'
-import * as record from 'N/record'
+import * as record from 'N/record';
+import { FieldType } from '../Record';
+import { type Sublist, SublistFieldType, SublistLine } from '../Sublist';
+import { TransactionBase } from './Transaction';
 
 export class ApplySublist extends SublistLine {
-   @SublistFieldType.freeformtext
-   amount: string
+	@SublistFieldType.freeformtext
+	amount: string;
 
-   @SublistFieldType.checkbox
-   apply: boolean
+	@SublistFieldType.checkbox
+	apply: boolean;
 
-   @SublistFieldType.date
-   applydate: Date
+	@SublistFieldType.date
+	applydate: Date;
 
-   @SublistFieldType.freeformtext
-   createdfrom: string
+	@SublistFieldType.freeformtext
+	createdfrom: string;
 
-   @SublistFieldType.freeformtext
-   doc: string
+	@SublistFieldType.freeformtext
+	doc: string;
 
-   @SublistFieldType.freeformtext
-   due: string
+	@SublistFieldType.freeformtext
+	due: string;
 
-   @SublistFieldType.date
-   duedate: Date
+	@SublistFieldType.date
+	duedate: Date;
 
-   @SublistFieldType.integernumber
-   job: number
+	@SublistFieldType.integernumber
+	job: number;
 
-   @SublistFieldType.integernumber
-   line: number
+	@SublistFieldType.integernumber
+	line: number;
 
-   @SublistFieldType.freeformtext
-   refnum: string
+	@SublistFieldType.freeformtext
+	refnum: string;
 
-   @SublistFieldType.freeformtext
-   total: string
+	@SublistFieldType.freeformtext
+	total: string;
 
-   @SublistFieldType.freeformtext
-   url: string
+	@SublistFieldType.freeformtext
+	url: string;
 }
 
 /**
  *
  */
 export class DepositApplicationBase extends TransactionBase {
-   static override recordType() { return record.Type.DEPOSIT_APPLICATION }
+	static override recordType() {
+		return record.Type.DEPOSIT_APPLICATION;
+	}
 
-   @FieldType.select
-   aracct: number
+	@FieldType.select
+	aracct: number;
 
-   @FieldType.select
-   currency: number
+	@FieldType.select
+	currency: number;
 
-   @FieldType.select
-   customer: number
+	@FieldType.select
+	customer: number;
 
-   @FieldType.select
-   deposit: number
+	@FieldType.select
+	deposit: number;
 
-   @FieldType.date
-   depositdate: Date
+	@FieldType.date
+	depositdate: Date;
 
-   @FieldType.sublist(ApplySublist)
-   apply: Sublist<ApplySublist>
+	@FieldType.sublist(ApplySublist)
+	apply: Sublist<ApplySublist>;
 }

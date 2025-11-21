@@ -2,164 +2,164 @@
  * Represents an Check (check) transaction type in NetSuite
  */
 
-import { FieldType } from '../Record'
-import { SublistFieldType, Sublist, SublistLine } from '../Sublist'
-import { TransactionBase } from './Transaction'
-import * as record from 'N/record'
+import * as record from 'N/record';
+import { FieldType } from '../Record';
+import { type Sublist, SublistFieldType, SublistLine } from '../Sublist';
+import { TransactionBase } from './Transaction';
 
 /**
  * Check (expense) sublist definition
  */
 export class ExpenseSublist extends SublistLine {
+	@SublistFieldType.select
+	account: number;
 
-   @SublistFieldType.select
-   account: number
+	@SublistFieldType.float
+	amount: number;
 
-   @SublistFieldType.float
-   amount: number
+	@SublistFieldType.select
+	class: number;
 
-   @SublistFieldType.select
-   class: number
+	@SublistFieldType.select
+	customer: number;
 
-   @SublistFieldType.select
-   customer: number
+	@SublistFieldType.checkbox
+	isbillable: boolean;
 
-   @SublistFieldType.checkbox
-   isbillable: boolean
+	@SublistFieldType.select
+	location: number;
 
-   @SublistFieldType.select
-   location: number
-
-   @SublistFieldType.freeformtext
-   memo: string
+	@SublistFieldType.freeformtext
+	memo: string;
 }
 
 /**
  * Check (item) sublist definition
  */
 export class ItemSublist extends SublistLine {
+	@SublistFieldType.currency
+	amount: number | string;
 
-   @SublistFieldType.currency
-   amount: number | string
+	@SublistFieldType.select
+	catchupperiod: number;
 
-   @SublistFieldType.select
-   catchupperiod: number
+	@SublistFieldType.select
+	class: number;
 
-   @SublistFieldType.select
-   class: number
+	@SublistFieldType.select
+	customer: number;
 
-   @SublistFieldType.select
-   customer: number
+	@SublistFieldType.checkbox
+	deferrevrec: boolean;
 
-   @SublistFieldType.checkbox
-   deferrevrec: boolean
+	@SublistFieldType.select
+	department: number;
 
-   @SublistFieldType.select
-   department: number
+	@SublistFieldType.textarea
+	description: string;
 
-   @SublistFieldType.textarea
-   description: string
+	@SublistFieldType.checkbox
+	isbillable: boolean;
 
-   @SublistFieldType.checkbox
-   isbillable: boolean
+	@SublistFieldType.select
+	item: number;
 
-   @SublistFieldType.select
-   item: number
+	@SublistFieldType.freeformtext
+	itemsubtype: string;
 
-   @SublistFieldType.freeformtext
-   itemsubtype: string
+	@SublistFieldType.freeformtext
+	itemtype: string;
 
-   @SublistFieldType.freeformtext
-   itemtype: string
+	@SublistFieldType.freeformtext
+	line: string;
 
-   @SublistFieldType.freeformtext
-   line: string
+	@SublistFieldType.integernumber
+	linenumber: number;
 
-   @SublistFieldType.integernumber
-   linenumber: number
+	@SublistFieldType.select
+	location: number;
 
-   @SublistFieldType.select
-   location: number
+	@SublistFieldType.freeformtext
+	matrixtype: string;
 
-   @SublistFieldType.freeformtext
-   matrixtype: string
+	@SublistFieldType.freeformtext
+	options: any;
 
-   @SublistFieldType.freeformtext
-   options: any
+	@SublistFieldType.float
+	quantity: number | string;
 
-   @SublistFieldType.float
-   quantity: number | string
+	@SublistFieldType.float
+	rate: number | string;
 
-   @SublistFieldType.float
-   rate: number | string
+	@SublistFieldType.select
+	taxcode: number;
 
-   @SublistFieldType.select
-   taxcode: number
+	@SublistFieldType.percent
+	taxrate1: number | string;
 
-   @SublistFieldType.percent
-   taxrate1: number | string
+	@SublistFieldType.select
+	units: number;
 
-   @SublistFieldType.select
-   units: number
-
-   @SublistFieldType.freeformtext
-   vendorname: string
+	@SublistFieldType.freeformtext
+	vendorname: string;
 }
 
 /**
  *  NetSuite Check Record definition
  */
 export class CheckBase extends TransactionBase {
-   static override recordType() { return record.Type.CHECK as const }
+	static override recordType() {
+		return record.Type.CHECK as const;
+	}
 
-   @FieldType.select
-   account: number
+	@FieldType.select
+	account: number;
 
-   @FieldType.currency
-   balance: number | string
+	@FieldType.currency
+	balance: number | string;
 
-   @FieldType.checkbox
-   billpay: boolean
+	@FieldType.checkbox
+	billpay: boolean;
 
-   @FieldType.select
-   class: number
+	@FieldType.select
+	class: number;
 
-   @FieldType.select
-   currency: number
+	@FieldType.select
+	currency: number;
 
-   @FieldType.freeformtext
-   currencyname: string
+	@FieldType.freeformtext
+	currencyname: string;
 
-   @FieldType.select
-   entitynexus: number
+	@FieldType.select
+	entitynexus: number;
 
-   @FieldType.currency
-   exchangerate: number | string
+	@FieldType.currency
+	exchangerate: number | string;
 
-   @FieldType.checkbox
-   isbasecurrency: boolean
+	@FieldType.checkbox
+	isbasecurrency: boolean;
 
-   @FieldType.checkbox
-   landedcostperline: boolean
+	@FieldType.checkbox
+	landedcostperline: boolean;
 
-   @FieldType.select
-   nexus: number
+	@FieldType.select
+	nexus: number;
 
-   @FieldType.select
-   payeeaddresslist: number
+	@FieldType.select
+	payeeaddresslist: number;
 
-   @FieldType.checkbox
-   tobeprinted: boolean
+	@FieldType.checkbox
+	tobeprinted: boolean;
 
-   @FieldType.currency
-   total: number | string
+	@FieldType.currency
+	total: number | string;
 
-   @FieldType.currency
-   usertotal: number | string
+	@FieldType.currency
+	usertotal: number | string;
 
-   @FieldType.sublist(ExpenseSublist)
-   expense: Sublist<ExpenseSublist>
+	@FieldType.sublist(ExpenseSublist)
+	expense: Sublist<ExpenseSublist>;
 
-   @FieldType.sublist(ItemSublist)
-   item: Sublist<ItemSublist>
+	@FieldType.sublist(ItemSublist)
+	item: Sublist<ItemSublist>;
 }

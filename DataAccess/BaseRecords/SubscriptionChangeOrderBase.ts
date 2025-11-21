@@ -1,80 +1,80 @@
-import {NetsuiteRecord, FieldType} from '../Record'
-import {Sublist, SublistFieldType, SublistLine} from "../Sublist"
-import * as record from 'N/record'
+import * as record from 'N/record';
+import { FieldType, NetsuiteRecord } from '../Record';
+import { type Sublist, SublistFieldType, SublistLine } from '../Sublist';
 
 /**
  * New Lines (newsubline) sublist
  */
 export class NewSublineSublist extends SublistLine {
-    /**
-     * Item
-     */
-    @SublistFieldType.freeformtext
-    item: string
+	/**
+	 * Item
+	 */
+	@SublistFieldType.freeformtext
+	item: string;
 
-    /**
-     * Subscription Line
-     */
-    @SublistFieldType.freeformtext
-    subscriptionline: string
+	/**
+	 * Subscription Line
+	 */
+	@SublistFieldType.freeformtext
+	subscriptionline: string;
 }
 
 /**
  * Renewal Steps (renewalsteps) sublist
  */
 export class RenewalStepsSublist extends SublistLine {
-    /**
-     * Subscription
-     */
-    @SublistFieldType.decimalnumber
-    subscription: number
+	/**
+	 * Subscription
+	 */
+	@SublistFieldType.decimalnumber
+	subscription: number;
 
-    /**
-     * Transaction
-     */
-    @SublistFieldType.decimalnumber
-    transaction: number
+	/**
+	 * Transaction
+	 */
+	@SublistFieldType.decimalnumber
+	transaction: number;
 }
 
 /**
  * Items (subline) sublist
  */
 export class SublineSublist extends SublistLine {
-    /**
-     * Include
-     */
-    @SublistFieldType.checkbox
-    apply: boolean
+	/**
+	 * Include
+	 */
+	@SublistFieldType.checkbox
+	apply: boolean;
 
-    /**
-     * Billing Mode
-     */
-    @SublistFieldType.freeformtext
-    billingmode: string
+	/**
+	 * Billing Mode
+	 */
+	@SublistFieldType.freeformtext
+	billingmode: string;
 
-    /**
-     * Discount
-     */
-    @SublistFieldType.percent
-    discount: number
+	/**
+	 * Discount
+	 */
+	@SublistFieldType.percent
+	discount: number;
 
-    /**
-     * New Discount
-     */
-    @SublistFieldType.percent
-    discountnew: number
+	/**
+	 * New Discount
+	 */
+	@SublistFieldType.percent
+	discountnew: number;
 
-    /**
-     * End Date
-     */
-    @SublistFieldType.date
-    enddate: Date
+	/**
+	 * End Date
+	 */
+	@SublistFieldType.date
+	enddate: Date;
 
-    /**
-     * Include in Renewal
-     */
-    @SublistFieldType.freeformtext
-    includeinrenewal: string
+	/**
+	 * Include in Renewal
+	 */
+	@SublistFieldType.freeformtext
+	includeinrenewal: string;
 }
 
 /**
@@ -82,182 +82,183 @@ export class SublineSublist extends SublistLine {
  * On creation, the following default values are required: action and subscription.
  */
 export class SubscriptionChangeOrderBase extends NetsuiteRecord {
-    /**
-     * Date Approved
-     */
-    @FieldType.datetime
-    approvaldate: Date
+	/**
+	 * Date Approved
+	 */
+	@FieldType.datetime
+	approvaldate: Date;
 
-    /**
-     * Approval Status
-     * NetSuite lists this as a select field, but it is a string value (e.g. APPROVED).
-     */
-    @FieldType.select
-    approvalstatus: number | string
+	/**
+	 * Approval Status
+	 * NetSuite lists this as a select field, but it is a string value (e.g. APPROVED).
+	 */
+	@FieldType.select
+	approvalstatus: number | string;
 
-    /**
-     * Billing Account
-     */
-    @FieldType.select
-    billingaccount: number
+	/**
+	 * Billing Account
+	 */
+	@FieldType.select
+	billingaccount: number;
 
-    /**
-     * Created By
-     */
-    @FieldType.freeformtext
-    createdby: string
+	/**
+	 * Created By
+	 */
+	@FieldType.freeformtext
+	createdby: string;
 
-    /**
-     * Customer
-     */
-    @FieldType.select
-    customer: number
+	/**
+	 * Customer
+	 */
+	@FieldType.select
+	customer: number;
 
-    /**
-     * Date Created
-     */
-    @FieldType.date
-    datecreated: Date
+	/**
+	 * Date Created
+	 */
+	@FieldType.date
+	datecreated: Date;
 
-    /**
-     * Effective Date
-     * This date needs to match any other Change Order effective dates or else NetSuite will throw an error.
-     */
-    @FieldType.date
-    effectivedate: Date
+	/**
+	 * Effective Date
+	 * This date needs to match any other Change Order effective dates or else NetSuite will throw an error.
+	 */
+	@FieldType.date
+	effectivedate: Date;
 
-    /**
-     * External ID
-     */
-    @FieldType.freeformtext
-    externalid: string
+	/**
+	 * External ID
+	 */
+	@FieldType.freeformtext
+	externalid: string;
 
-    /**
-     * Number
-     */
-    @FieldType.freeformtext
-    idnumber: string
+	/**
+	 * Number
+	 */
+	@FieldType.freeformtext
+	idnumber: string;
 
-    /**
-     * Memo
-     */
-    @FieldType.textarea
-    memo: string
+	/**
+	 * Memo
+	 */
+	@FieldType.textarea
+	memo: string;
 
-    /**
-     * Modification Type
-     */
-    @FieldType.textarea
-    modificationtype: string
+	/**
+	 * Modification Type
+	 */
+	@FieldType.textarea
+	modificationtype: string;
 
-    /**
-     * Reactivation Option
-     */
-    @FieldType.select
-    reactivationoption: number
+	/**
+	 * Reactivation Option
+	 */
+	@FieldType.select
+	reactivationoption: number;
 
-    /**
-     * Renewal End Date
-     */
-    @FieldType.date
-    renewalenddate: Date
+	/**
+	 * Renewal End Date
+	 */
+	@FieldType.date
+	renewalenddate: Date;
 
-    /**
-     * Renewal Method
-     */
-    @FieldType.select
-    renewalmethod: number
+	/**
+	 * Renewal Method
+	 */
+	@FieldType.select
+	renewalmethod: number;
 
-    /**
-     * Renewal Subscription Plan
-     */
-    @FieldType.select
-    renewalplan: number
+	/**
+	 * Renewal Subscription Plan
+	 */
+	@FieldType.select
+	renewalplan: number;
 
-    /**
-     * Renewal Price Book
-     */
-    @FieldType.select
-    renewalpricebook: number
+	/**
+	 * Renewal Price Book
+	 */
+	@FieldType.select
+	renewalpricebook: number;
 
-    /**
-     * Renewal Start Date
-     */
-    @FieldType.date
-    renewalstartdate: Date
+	/**
+	 * Renewal Start Date
+	 */
+	@FieldType.date
+	renewalstartdate: Date;
 
-    /**
-     * Renewal Term
-     */
-    @FieldType.select
-    renewalterm: number | string
+	/**
+	 * Renewal Term
+	 */
+	@FieldType.select
+	renewalterm: number | string;
 
-    /**
-     * Renewal Transaction Type
-     */
-    @FieldType.select
-    renewaltrantype: number
+	/**
+	 * Renewal Transaction Type
+	 */
+	@FieldType.select
+	renewaltrantype: number;
 
-    /**
-     * Request Off-Cycle Invoice For Advance Charges
-     */
-    @FieldType.checkbox
-    requestoffcycleinvoice: boolean
+	/**
+	 * Request Off-Cycle Invoice For Advance Charges
+	 */
+	@FieldType.checkbox
+	requestoffcycleinvoice: boolean;
 
-    /**
-     * Requester
-     */
-    @FieldType.select
-    requestor: number
+	/**
+	 * Requester
+	 */
+	@FieldType.select
+	requestor: number;
 
-    /**
-     * Subscription
-     */
-    @FieldType.select
-    subscription: number
+	/**
+	 * Subscription
+	 */
+	@FieldType.select
+	subscription: number;
 
-    /**
-     * Subscription Plan
-     */
-    @FieldType.select
-    subscriptionplan: number
+	/**
+	 * Subscription Plan
+	 */
+	@FieldType.select
+	subscriptionplan: number;
 
-    /**
-     * Subscription Term Duration
-     */
-    @FieldType.integernumber
-    subscriptiontermduration: number
+	/**
+	 * Subscription Term Duration
+	 */
+	@FieldType.integernumber
+	subscriptiontermduration: number;
 
-    /**
-     * Subscription Term Type
-     */
-    @FieldType.freeformtext
-    subscriptiontermtype: string
+	/**
+	 * Subscription Term Type
+	 */
+	@FieldType.freeformtext
+	subscriptiontermtype: string;
 
-    /**
-     * Subsidiary
-     */
-    @FieldType.select
-    subsidiary: number
+	/**
+	 * Subsidiary
+	 */
+	@FieldType.select
+	subsidiary: number;
 
-    /**
-     * New Lines (newsubline) Sublist
-     */
-    @FieldType.sublist(NewSublineSublist)
-    newsubline: Sublist<NewSublineSublist>
+	/**
+	 * New Lines (newsubline) Sublist
+	 */
+	@FieldType.sublist(NewSublineSublist)
+	newsubline: Sublist<NewSublineSublist>;
 
-    /**
-     * Renewal Steps (renewalsteps) Sublist
-     */
-    @FieldType.sublist(RenewalStepsSublist)
-    renewalsteps : Sublist<RenewalStepsSublist>
+	/**
+	 * Renewal Steps (renewalsteps) Sublist
+	 */
+	@FieldType.sublist(RenewalStepsSublist)
+	renewalsteps: Sublist<RenewalStepsSublist>;
 
-    /**
-     * Items (subline) Sublist
-     */
-    @FieldType.sublist(SublineSublist)
-    subline  : Sublist<SublineSublist>
+	/**
+	 * Items (subline) Sublist
+	 */
+	@FieldType.sublist(SublineSublist)
+	subline: Sublist<SublineSublist>;
 
-    static override recordType() { return record.Type.SUBSCRIPTION_CHANGE_ORDER }
-
+	static override recordType() {
+		return record.Type.SUBSCRIPTION_CHANGE_ORDER;
+	}
 }

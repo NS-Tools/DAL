@@ -1,40 +1,41 @@
-import { NetsuiteRecord, FieldType } from '../Record'
-import { Sublist, SublistFieldType, SublistLine } from '../Sublist'
-import * as record from 'N/record'
+import * as record from 'N/record';
+import { FieldType, NetsuiteRecord } from '../Record';
+import { type Sublist, SublistFieldType, SublistLine } from '../Sublist';
 
 export class DiscountSublist extends SublistLine {
 	@SublistFieldType.freeformtext
-	memo: string
+	memo: string;
 
 	@SublistFieldType.decimalnumber
-	fromquantity: number
+	fromquantity: number;
 
 	@SublistFieldType.percent
-	percent: number
+	percent: number;
 
 	@SublistFieldType.decimalnumber
-	quantityordered: number
+	quantityordered: number;
 
 	@SublistFieldType.decimalnumber
-	rate: number
+	rate: number;
 }
 
 /**
  * NetSuite Item Pricing Record type with custom fields.
  */
 export class ItemPricingBase extends NetsuiteRecord {
-
-	static override recordType() { return 'itempricing' }
-
-	@FieldType.select
-	calculatequantitydiscounts: string | undefined
+	static override recordType() {
+		return 'itempricing';
+	}
 
 	@FieldType.select
-	priceusing: string | undefined
+	calculatequantitydiscounts: string | undefined;
 
 	@FieldType.select
-	inputusing: string | undefined
+	priceusing: string | undefined;
+
+	@FieldType.select
+	inputusing: string | undefined;
 
 	@FieldType.sublist(DiscountSublist)
-	discount: Sublist<DiscountSublist>
+	discount: Sublist<DiscountSublist>;
 }

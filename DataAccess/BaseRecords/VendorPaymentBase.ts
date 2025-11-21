@@ -2,108 +2,107 @@
  * Vendor Payment base record
  */
 
-import { Sublist, SublistFieldType, SublistLine } from '../Sublist'
-import * as record from 'N/record'
-import { TransactionBase } from './Transaction'
-import { FieldType } from '../Record'
+import * as record from 'N/record';
+import { FieldType } from '../Record';
+import { type Sublist, SublistFieldType, SublistLine } from '../Sublist';
+import { TransactionBase } from './Transaction';
 
 /**
  * Sublist 'apply' on the Vendor Payment record
  */
 export class ApplySublist extends SublistLine {
-   @SublistFieldType.checkbox
-   apply: boolean
-   @SublistFieldType.date
-   applydate: Date
-   @SublistFieldType.currency
-   amount: number
-   @SublistFieldType.freeformtext
-   createdfrom: number
-   @SublistFieldType.currency
-   disc: number
-   @SublistFieldType.currency
-   discamt: number
-   @SublistFieldType.date
-   discdate: Date
-   @SublistFieldType.freeformtext
-   doc: string
-   @SublistFieldType.currency
-   due: number
-   @SublistFieldType.date
-   duedate: Date
-   @SublistFieldType.freeformtext
-   internalid: string
-   @SublistFieldType.integernumber
-   line: number
-   @SublistFieldType.freeformtext
-   refnum: string
-   @SublistFieldType.currency
-   total: number
-   @SublistFieldType.freeformtext
-   url: string
+	@SublistFieldType.checkbox
+	apply: boolean;
+	@SublistFieldType.date
+	applydate: Date;
+	@SublistFieldType.currency
+	amount: number;
+	@SublistFieldType.freeformtext
+	createdfrom: number;
+	@SublistFieldType.currency
+	disc: number;
+	@SublistFieldType.currency
+	discamt: number;
+	@SublistFieldType.date
+	discdate: Date;
+	@SublistFieldType.freeformtext
+	doc: string;
+	@SublistFieldType.currency
+	due: number;
+	@SublistFieldType.date
+	duedate: Date;
+	@SublistFieldType.freeformtext
+	internalid: string;
+	@SublistFieldType.integernumber
+	line: number;
+	@SublistFieldType.freeformtext
+	refnum: string;
+	@SublistFieldType.currency
+	total: number;
+	@SublistFieldType.freeformtext
+	url: string;
 }
 
 /**
  * NetSuite Vendor Payment Record
  */
 export class VendorPaymentBase extends TransactionBase {
-   static override recordType() { return record.Type.VENDOR_PAYMENT }
+	static override recordType() {
+		return record.Type.VENDOR_PAYMENT;
+	}
 
-   @FieldType.select
-   account: number
+	@FieldType.select
+	account: number;
 
-   // A/P ACCOUNT
-   @FieldType.select
-   apacct: number
+	// A/P ACCOUNT
+	@FieldType.select
+	apacct: number;
 
-   @FieldType.currency
-   balance: number
+	@FieldType.currency
+	balance: number;
 
-   @FieldType.checkbox
-   billpay: boolean
+	@FieldType.checkbox
+	billpay: boolean;
 
-   @FieldType.select
-   currency: number
+	@FieldType.select
+	currency: number;
 
-   @FieldType.freeformtext
-   currencyname: string
+	@FieldType.freeformtext
+	currencyname: string;
 
-   @FieldType.freeformtext
-   currencysymbol: string
+	@FieldType.freeformtext
+	currencysymbol: string;
 
-   @FieldType.currency
-   exchangerate: number
+	@FieldType.currency
+	exchangerate: number;
 
-   @FieldType.checkbox
-   isbasecurrency: boolean
+	@FieldType.checkbox
+	isbasecurrency: boolean;
 
-   @FieldType.select
-   nexus: number
+	@FieldType.select
+	nexus: number;
 
-   @FieldType.checkbox
-   printvoucher: boolean
+	@FieldType.checkbox
+	printvoucher: boolean;
 
-   @FieldType.checkbox
-   toach: boolean
+	@FieldType.checkbox
+	toach: boolean;
 
-   @FieldType.checkbox
-   tobeemailed: boolean
+	@FieldType.checkbox
+	tobeemailed: boolean;
 
-   @FieldType.checkbox
-   tobeprinted: boolean
+	@FieldType.checkbox
+	tobeprinted: boolean;
 
-   @FieldType.currency
-   total: number
+	@FieldType.currency
+	total: number;
 
-   @FieldType.freeformtext
-   transactionnumber: string
+	@FieldType.freeformtext
+	transactionnumber: string;
 
-   @FieldType.currency
-   unapplied: number
+	@FieldType.currency
+	unapplied: number;
 
-   @FieldType.sublist(ApplySublist)
-   apply: Sublist<ApplySublist>
+	@FieldType.sublist(ApplySublist)
+	apply: Sublist<ApplySublist>;
 }
-
-
-

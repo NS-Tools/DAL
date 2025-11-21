@@ -1,1 +1,1 @@
-export const Type = {}
+export const Type = {};

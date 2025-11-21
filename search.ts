@@ -8,13 +8,13 @@
  * @module
  */
 
-import * as search from 'N/search'
-import * as LogManager from './EC_Logger'
+import * as search from 'N/search';
+import * as LogManager from './EC_Logger';
 
 /**
  *  Any object that includes an 'id' property, which NS search results always have
  */
-export type ObjectWithId<T> = T & { id: string }
+export type ObjectWithId<T> = T & { id: string };
 
 /**
  * NetSuite search results always have an `id` property and `recordType` property.
@@ -22,7 +22,7 @@ export type ObjectWithId<T> = T & { id: string }
  * precedence over these values, so don't use `id` or `recordType` as your custom column label if you want the
  * native SearchResult property values to be used.
  */
-export type BaseSearchResult<T> = ObjectWithId<T> & { recordType:string | search.Type }
+export type BaseSearchResult<T> = ObjectWithId<T> & { recordType: string | search.Type };
 
 /**
  * Rudimentary conversion of a NS search result to a simple flat plain javascript object. Suitable as an argument to `map()`
@@ -49,22 +49,25 @@ export type BaseSearchResult<T> = ObjectWithId<T> & { recordType:string | search
  *
  *  ```
  */
-export function nsSearchResult2obj <T = {}>(useLabels = true, addGetTextProps = true): (r:search.Result)=> BaseSearchResult<T> {
-   return function (result: search.Result) {
-      let output : { id:string, recordType?:string | search.Type } = {id: result.id, recordType:result.recordType }
-      // assigns each column VALUE from the search result to the output object
-      if (result.columns && result.columns.length > 0)
-         result.columns.forEach((col) => {
-            const propName = (useLabels && col.label) ? col.label : col.name
-            output[propName] = result.getValue(col)
-            // if the column has a truthy text value, include that as a 'propnameText' field similar to how nsdal behaves
-            if (addGetTextProps) {
-               const text = result.getText(col)
-               if (text) output[`${propName}Text`] = text
-            }
-         })
-      return output as BaseSearchResult<T>
-   }
+export function nsSearchResult2obj<T = {}>(
+	useLabels = true,
+	addGetTextProps = true,
+): (r: search.Result) => BaseSearchResult<T> {
+	return (result: search.Result) => {
+		const output: { id: string; recordType?: string | search.Type } = { id: result.id, recordType: result.recordType };
+		// assigns each column VALUE from the search result to the output object
+		if (result.columns && result.columns.length > 0)
+			result.columns.forEach((col) => {
+				const propName = useLabels && col.label ? col.label : col.name;
+				output[propName] = result.getValue(col);
+				// if the column has a truthy text value, include that as a 'propnameText' field similar to how nsdal behaves
+				if (addGetTextProps) {
+					const text = result.getText(col);
+					if (text) output[`${propName}Text`] = text;
+				}
+			});
+		return output as BaseSearchResult<T>;
+	};
 }
 
 /**
@@ -87,163 +90,161 @@ export function nsSearchResult2obj <T = {}>(useLabels = true, addGetTextProps = 
  * ```
  */
 export class LazySearch implements IterableIterator<search.Result> {
+	/**
+	 * LazySearch is both an iterable and an iterator for search results.
+	 */
+	[Symbol.iterator](): IterableIterator<search.Result> {
+		return this;
+	}
 
-   /**
-    * LazySearch is both an iterable and an iterator for search results.
-    */
-   [Symbol.iterator] (): IterableIterator<search.Result> {
-      return this
-   }
+	/**
+	 * the name of the custom logger for this component for independent logging control
+	 */
+	static LOGNAME = 'lazy';
 
-   /**
-    * the name of the custom logger for this component for independent logging control
-    */
-   static LOGNAME = 'lazy'
+	// /**
+	//  * A LazySearch is iterable per the iterable protocol, which also plays nicely with immutablejs
+	//  * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols
+	//  */
 
-   // /**
-   //  * A LazySearch is iterable per the iterable protocol, which also plays nicely with immutablejs
-   //  * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols
-   //  */
+	/**
+	 * Loads an existing NS search by id and prepares it for lazy evaluation
+	 * @param id internal id of the search to load
+	 * @param pageSize how many records to retrieve per page (paging is automatic) Maximum value: 1000
+	 * @returns {LazySearch}
+	 *
+	 * @example do something for each search result, automatically exiting if out of governance.
+	 *
+	 * ```typescript
+	 *
+	 * import {Seq} from './NFT-X.Y.Z/immutable'
+	 * import {governanceRemains, LazySearch, nsSearchResult2obj} from './NFT-X.Y.Z/search'
+	 *
+	 * Seq(LazySearch.load('1234'))
+	 *   .takeWhile(governanceRemains()) // process until we drop below default governance threshold
+	 *   .map(nsSearchResult2obj()) // convert search results to plain objects with properties
+	 *   .forEach( r => log.debug(r))
+	 * ```
+	 */
+	static load(id: string, pageSize?: number) {
+		return new LazySearch(search.load({ id: id }), pageSize);
+	}
 
+	/**
+	 * Creates a lazy search from an existing NS search.
+	 * @param search
+	 * @param pageSize
+	 * @returns {LazySearch}
+	 *
+	 * @example create a search and begin lazy processing of results
+	 *
+	 * ```
+	 * import {Seq} from './NFT-X.Y.Z/immutable'
+	 * import * as search from 'N/search
+	 * import {governanceRemains, LazySearch, nsSearchResult2obj} from './NFT-X.Y.Z/search'
+	 *
+	 * Seq(LazySearch.from(search.create({
+	 *    filters: [['internalid', 'anyof', [1,2]),
+	 *    columns:['item', 'description'],
+	 *    type: search.Type.ITEM,
+	 *  })))
+	 *   .takeWhile(governanceRemains()) // process until we drop below default governance threshold
+	 *   .map(nsSearchResult2obj()) // convert search results to plain objects with properties
+	 *   .forEach( r => log.debug(r))
+	 * ```
+	 */
+	static from(search: search.Search, pageSize?: number) {
+		return new LazySearch(search, pageSize);
+	}
 
+	// logger for this module
+	protected log: LogManager.Logger;
+	// the current set of search results. This is replaced as we cross from one page to the next to keep a constant memory footprint
+	protected currentData: search.Result[];
+	// index into currentData[] pointing to the 'current' search result
+	protected index: number;
+	// Starting point of the next page
+	protected nextPageStart: number = 0;
+	// Current range of the search result
+	protected currentRange: search.Result[];
+	// Fully executed search (simply, a search.run())
+	protected executedSearch: search.ResultSet;
+	// Total length of the search result set
+	protected totalSearchResultLength: number = 0;
 
-   /**
-    * Loads an existing NS search by id and prepares it for lazy evaluation
-    * @param id internal id of the search to load
-    * @param pageSize how many records to retrieve per page (paging is automatic) Maximum value: 1000
-    * @returns {LazySearch}
-    *
-    * @example do something for each search result, automatically exiting if out of governance.
-    *
-    * ```typescript
-    *
-    * import {Seq} from './NFT-X.Y.Z/immutable'
-    * import {governanceRemains, LazySearch, nsSearchResult2obj} from './NFT-X.Y.Z/search'
-    *
-    * Seq(LazySearch.load('1234'))
-    *   .takeWhile(governanceRemains()) // process until we drop below default governance threshold
-    *   .map(nsSearchResult2obj()) // convert search results to plain objects with properties
-    *   .forEach( r => log.debug(r))
-    * ```
-    */
-   static load(id: string, pageSize?: number) {
-      return new LazySearch(search.load({id: id}), pageSize)
-   }
+	/**
+	 * Not meant to be used directly, use factory methods such as `load` or `from`
+	 * @param search the netsuite search object to wrap
+	 * @param pageSize optional pagesize, can be up to 1000
+	 */
+	private constructor(
+		private search: search.Search,
+		private pageSize = 1000,
+	) {
+		if (pageSize > 1000) throw new Error('page size must be <= 1000');
+		this.log = LogManager.getLogger(LazySearch.LOGNAME);
+		this.log.debug('pageSize', pageSize);
 
-   /**
-    * Creates a lazy search from an existing NS search.
-    * @param search
-    * @param pageSize
-    * @returns {LazySearch}
-    *
-    * @example create a search and begin lazy processing of results
-    *
-    * ```
-    * import {Seq} from './NFT-X.Y.Z/immutable'
-    * import * as search from 'N/search
-    * import {governanceRemains, LazySearch, nsSearchResult2obj} from './NFT-X.Y.Z/search'
-    *
-    * Seq(LazySearch.from(search.create({
-    *    filters: [['internalid', 'anyof', [1,2]),
-    *    columns:['item', 'description'],
-    *    type: search.Type.ITEM,
-    *  })))
-    *   .takeWhile(governanceRemains()) // process until we drop below default governance threshold
-    *   .map(nsSearchResult2obj()) // convert search results to plain objects with properties
-    *   .forEach( r => log.debug(r))
-    * ```
-    */
-   static from(search: search.Search, pageSize?: number) {
-      return new LazySearch(search, pageSize)
-   }
+		this.currentData = [];
+		this.executedSearch = search.run();
+		this.currentRange = this.executedSearch.getRange({
+			start: 0,
+			end: pageSize,
+		});
+		this.log.debug('Length', this.currentRange.length);
+		if (this.currentRange.length) {
+			this.nextPageStart = this.currentRange.length;
+			this.log.debug('results returned');
+		} else {
+			this.currentData = [];
+			this.log.debug('run() search return zero results');
+		}
 
-   // logger for this module
-   protected log: LogManager.Logger
-   // the current set of search results. This is replaced as we cross from one page to the next to keep a constant memory footprint
-   protected currentData: search.Result[]
-   // index into currentData[] pointing to the 'current' search result
-   protected index: number
-   // Starting point of the next page
-   protected nextPageStart: number = 0
-   // Current range of the search result
-   protected currentRange: search.Result[]
-   // Fully executed search (simply, a search.run())
-   protected executedSearch: search.ResultSet
-   // Total length of the search result set
-   protected totalSearchResultLength: number = 0
+		this.index = 0;
+		this.log.info(
+			`lazy search id ${search.searchId || 'ad-hoc'}`,
+			`using "page" size ${this.pageSize}, record count ${this.totalSearchResultLength}`,
+		);
+	}
 
-   /**
-    * Not meant to be used directly, use factory methods such as `load` or `from`
-    * @param search the netsuite search object to wrap
-    * @param pageSize optional pagesize, can be up to 1000
-    */
-   private constructor (private search: search.Search, private pageSize = 1000) {
-      if (pageSize > 1000) throw new Error('page size must be <= 1000')
-      this.log = LogManager.getLogger(LazySearch.LOGNAME)
-      this.log.debug('pageSize', pageSize)
+	/**
+	 * per the iterator protocol, retrieves the next element. Also returns `null` if done as the specification for
+	 * the protocol says the value property is optional when 'done'
+	 *
+	 * You don't typically call this function yourself - libraries like ImmutableJS do.
+	 */
+	next(): IteratorResult<search.Result> {
+		this.log.debug('In Next function');
+		this.log.debug('index', this.index);
+		this.log.debug('currentRange.length', this.currentRange.length);
+		const atEndOfRange = this.index === this.currentRange.length;
 
-      this.currentData = []
-      this.executedSearch = search.run()
-      this.currentRange = this.executedSearch.getRange({
-         start: 0,
-         end: pageSize
-      })
-      this.log.debug('Length', this.currentRange.length)
-      if (this.currentRange.length) {
+		if (atEndOfRange) {
+			this.index = 0;
+			this.currentRange = this.executedSearch.getRange({
+				start: this.nextPageStart,
+				end: this.nextPageStart + this.pageSize,
+			});
+			this.log.debug('this.currentRange.length === 0', this.currentRange.length === 0);
+			if (this.currentRange.length === 0)
+				return {
+					done: true,
+					value: null,
+				};
+			this.nextPageStart = this.nextPageStart + this.currentRange.length;
+		}
 
-         this.nextPageStart = this.currentRange.length
-         this.log.debug('results returned')
-
-      } else {
-         this.currentData = []
-         this.log.debug('run() search return zero results')
-      }
-
-      this.index = 0
-      this.log.info(`lazy search id ${search.searchId || 'ad-hoc'}`,
-         `using "page" size ${this.pageSize}, record count ${this.totalSearchResultLength}`)
-   }
-
-   /**
-    * per the iterator protocol, retrieves the next element. Also returns `null` if done as the specification for
-    * the protocol says the value property is optional when 'done'
-    *
-    * You don't typically call this function yourself - libraries like ImmutableJS do.
-    */
-   next (): IteratorResult<search.Result> {
-
-      this.log.debug('In Next function')
-      this.log.debug('index', this.index);
-      this.log.debug('currentRange.length', this.currentRange.length);
-      const atEndOfRange = this.index === this.currentRange.length
-
-      if (atEndOfRange) {
-         this.index = 0
-         this.currentRange = this.executedSearch.getRange({
-            start: this.nextPageStart,
-            end: this.nextPageStart + this.pageSize
-         })
-         this.log.debug('this.currentRange.length === 0', this.currentRange.length === 0);
-         if(this.currentRange.length === 0) return {
-            done: true,
-            value: null
-         }
-         this.nextPageStart = this.nextPageStart + this.currentRange.length
-      }
-
-      this.log.info(`returning from next`,
-         {
-            done: false,
-            value: this.currentRange[this.index]
-         })
-      this.log.debug('this.index', this.index)
-      this.log.debug('this.currentRange[this.index]', this.currentRange[this.index])
-      const obj = {
-         done: false,
-         value: this.currentRange[this.index]
-      }
-      this.index++
-      return obj
-
-   }
+		this.log.info(`returning from next`, {
+			done: false,
+			value: this.currentRange[this.index],
+		});
+		this.log.debug('this.index', this.index);
+		this.log.debug('this.currentRange[this.index]', this.currentRange[this.index]);
+		const obj = {
+			done: false,
+			value: this.currentRange[this.index],
+		};
+		this.index++;
+		return obj;
+	}
 }

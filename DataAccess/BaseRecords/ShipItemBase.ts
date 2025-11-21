@@ -1,312 +1,311 @@
-import { FieldType, NetsuiteRecord } from '../Record'
-import * as record from 'N/record'
+import * as record from 'N/record';
+import { FieldType, NetsuiteRecord } from '../Record';
 
 /**
  * Ship Item base class
  */
 export class ShipItemBase extends NetsuiteRecord {
+	static override recordType() {
+		return record.Type.SHIP_ITEM;
+	}
 
+	@FieldType.checkbox
+	accchange: boolean;
 
-   static override recordType() { return record.Type.SHIP_ITEM }
+	@FieldType.select
+	account: number;
 
-   @FieldType.checkbox
-   accchange: boolean
+	@FieldType.select
+	accounthandling: number;
 
-   @FieldType.select
-   account: number
+	@FieldType.radio
+	costbasis: string;
 
-   @FieldType.select
-   accounthandling: number
+	@FieldType.select
+	countries: number;
 
-   @FieldType.radio
-   costbasis: string
+	@FieldType.textarea
+	description: string;
 
-   @FieldType.select
-   countries: number
+	@FieldType.freeformtext
+	displayname: string;
 
-   @FieldType.textarea
-   description: string
+	@FieldType.freeformtext
+	doifarrangement: string;
 
-   @FieldType.freeformtext
-   displayname: string
+	@FieldType.checkbox
+	doiftotal: boolean;
 
-   @FieldType.freeformtext
-   doifarrangement: string
+	@FieldType.currency
+	doiftotalamt: number;
 
-   @FieldType.checkbox
-   doiftotal: boolean
+	@FieldType.select
+	doiftotaloperator: number;
 
-   @FieldType.currency
-   doiftotalamt: number
+	@FieldType.checkbox
+	doifweight: boolean;
 
-   @FieldType.select
-   doiftotaloperator: number
+	@FieldType.currency
+	doifweightamt: number;
 
-   @FieldType.checkbox
-   doifweight: boolean
+	@FieldType.select
+	doifweightoperator: number;
 
-   @FieldType.currency
-   doifweightamt: number
+	@FieldType.select
+	doifweightunit: number;
 
-   @FieldType.select
-   doifweightoperator: number
+	@FieldType.freeformtext
+	edition: string;
 
-   @FieldType.select
-   doifweightunit: number
+	@FieldType.checkbox
+	excludecountries: boolean;
 
-   @FieldType.freeformtext
-   edition: string
+	@FieldType.checkbox
+	excludesites: boolean;
 
-   @FieldType.checkbox
-   excludecountries: boolean
+	@FieldType.freeformtext
+	externalid: string;
 
-   @FieldType.checkbox
-   excludesites: boolean
+	@FieldType.float
+	fedexdiscountrate: number;
 
-   @FieldType.freeformtext
-   externalid: string
+	@FieldType.checkbox
+	fedexonerate: boolean;
 
-   @FieldType.float
-   fedexdiscountrate: number
+	@FieldType.select
+	fedexservicecode: number;
 
-   @FieldType.checkbox
-   fedexonerate: boolean
+	@FieldType.currency
+	freeifordertotalisoveramount: number;
 
-   @FieldType.select
-   fedexservicecode: number
+	@FieldType.percent
+	handlingaspercentageoftotal: number;
 
-   @FieldType.currency
-   freeifordertotalisoveramount: number
+	@FieldType.currency
+	handlingbyweightamount: number;
 
-   @FieldType.percent
-   handlingaspercentageoftotal: number
+	@FieldType.float
+	handlingbyweightperquantity: number;
 
-   @FieldType.currency
-   handlingbyweightamount: number
+	@FieldType.select
+	handlingbyweightperunit: number;
 
-   @FieldType.float
-   handlingbyweightperquantity: number
+	@FieldType.radio
+	handlingcost: string;
 
-   @FieldType.select
-   handlingbyweightperunit: number
+	@FieldType.currency
+	handlingflatrateamount: number;
 
-   @FieldType.radio
-   handlingcost: string
+	@FieldType.currency
+	handlingperitemamount: number;
 
-   @FieldType.currency
-   handlingflatrateamount: number
+	@FieldType.select
+	handlingtablechargeby: number;
 
-   @FieldType.currency
-   handlingperitemamount: number
+	@FieldType.select
+	handlingtableuom: number;
 
-   @FieldType.select
-   handlingtablechargeby: number
+	@FieldType.select
+	handlingtaxcode: number;
 
-   @FieldType.select
-   handlingtableuom: number
+	@FieldType.checkbox
+	hasmaximumshippingcost: boolean;
 
-   @FieldType.select
-   handlingtaxcode: number
+	@FieldType.checkbox
+	hasminimumshippingcost: boolean;
 
-   @FieldType.checkbox
-   hasmaximumshippingcost: boolean
+	@FieldType.freeformtext
+	integratedlabelsarrangement: string;
 
-   @FieldType.checkbox
-   hasminimumshippingcost: boolean
+	@FieldType.select
+	integrationservicecode: number;
 
-   @FieldType.freeformtext
-   integratedlabelsarrangement: string
+	@FieldType.freeformtext
+	invt_dispname: string;
 
-   @FieldType.select
-   integrationservicecode: number
+	@FieldType.checkbox
+	isfreeifordertotalisover: boolean;
 
-   @FieldType.freeformtext
-   invt_dispname: string
+	@FieldType.checkbox
+	ishandlingbyweightbracketed: boolean;
 
-   @FieldType.checkbox
-   isfreeifordertotalisover: boolean
+	@FieldType.checkbox
+	ishandlingtaxable: boolean;
 
-   @FieldType.checkbox
-   ishandlingbyweightbracketed: boolean
+	@FieldType.checkbox
+	isinactive: boolean;
 
-   @FieldType.checkbox
-   ishandlingtaxable: boolean
+	@FieldType.checkbox
+	isonline: boolean;
 
-   @FieldType.checkbox
-   isinactive: boolean
+	@FieldType.checkbox
+	isshippingbyweightbracketed: boolean;
 
-   @FieldType.checkbox
-   isonline: boolean
+	@FieldType.checkbox
+	istaxable: boolean;
 
-   @FieldType.checkbox
-   isshippingbyweightbracketed: boolean
+	@FieldType.freeformtext
+	itemid: string;
 
-   @FieldType.checkbox
-   istaxable: boolean
+	@FieldType.freeformtext
+	itemtype: string;
 
-   @FieldType.freeformtext
-   itemid: string
+	@FieldType.freeformtext
+	labelplugin: string;
 
-   @FieldType.freeformtext
-   itemtype: string
+	@FieldType.select
+	labelpluginselect: number;
 
-   @FieldType.freeformtext
-   labelplugin: string
+	@FieldType.freeformtext
+	labelreg: string;
 
-   @FieldType.select
-   labelpluginselect: number
+	@FieldType.select
+	labelregselect: number;
 
-   @FieldType.freeformtext
-   labelreg: string
+	@FieldType.freeformtext
+	labelservice: string;
 
-   @FieldType.select
-   labelregselect: number
+	@FieldType.freeformtext
+	labelservicegroup: string;
 
-   @FieldType.freeformtext
-   labelservice: string
+	@FieldType.select
+	labelservicegroupselect: number;
 
-   @FieldType.freeformtext
-   labelservicegroup: string
+	@FieldType.select
+	labelserviceselect: number;
 
-   @FieldType.select
-   labelservicegroupselect: number
+	@FieldType.radio
+	labeltype: string;
 
-   @FieldType.select
-   labelserviceselect: number
+	@FieldType.currency
+	maximumshippingcost: number;
 
-   @FieldType.radio
-   labeltype: string
+	@FieldType.currency
+	minimumshippingcost: number;
 
-   @FieldType.currency
-   maximumshippingcost: number
+	@FieldType.checkbox
+	needsallfreeshippingitems: boolean;
 
-   @FieldType.currency
-   minimumshippingcost: number
+	@FieldType.checkbox
+	omitpackaging: boolean;
 
-   @FieldType.checkbox
-   needsallfreeshippingitems: boolean
+	@FieldType.freeformtext
+	pluginlabelsarrangement: string;
 
-   @FieldType.checkbox
-   omitpackaging: boolean
+	@FieldType.freeformtext
+	pluginratearrangement: string;
 
-   @FieldType.freeformtext
-   pluginlabelsarrangement: string
+	@FieldType.freeformtext
+	ratingplugin: string;
 
-   @FieldType.freeformtext
-   pluginratearrangement: string
+	@FieldType.select
+	ratingpluginselect: number;
 
-   @FieldType.freeformtext
-   ratingplugin: string
+	@FieldType.freeformtext
+	ratingreg: string;
 
-   @FieldType.select
-   ratingpluginselect: number
+	@FieldType.select
+	ratingregselect: number;
 
-   @FieldType.freeformtext
-   ratingreg: string
+	@FieldType.freeformtext
+	ratingservice: string;
 
-   @FieldType.select
-   ratingregselect: number
+	@FieldType.freeformtext
+	ratingservicegroup: string;
 
-   @FieldType.freeformtext
-   ratingservice: string
+	@FieldType.select
+	ratingservicegroupselect: number;
 
-   @FieldType.freeformtext
-   ratingservicegroup: string
+	@FieldType.select
+	ratingserviceselect: number;
 
-   @FieldType.select
-   ratingservicegroupselect: number
+	@FieldType.freeformtext
+	restrictionarrangement: string;
 
-   @FieldType.select
-   ratingserviceselect: number
+	@FieldType.freeformtext
+	returnlabelreg: string;
 
-   @FieldType.freeformtext
-   restrictionarrangement: string
+	@FieldType.select
+	returnlabelregselect: number;
 
-   @FieldType.freeformtext
-   returnlabelreg: string
+	@FieldType.freeformtext
+	returnlabelservice: string;
 
-   @FieldType.select
-   returnlabelregselect: number
+	@FieldType.select
+	returnlabelserviceselect: number;
 
-   @FieldType.freeformtext
-   returnlabelservice: string
+	@FieldType.select
+	returnservicecode: number;
 
-   @FieldType.select
-   returnlabelserviceselect: number
+	@FieldType.checkbox
+	returnsintegrated: boolean;
 
-   @FieldType.select
-   returnservicecode: number
+	@FieldType.freeformtext
+	shipitemcurrency: string;
 
-   @FieldType.checkbox
-   returnsintegrated: boolean
+	@FieldType.checkbox
+	shipperintegrated: boolean;
 
-   @FieldType.freeformtext
-   shipitemcurrency: string
+	@FieldType.percent
+	shippingaspercentageoftotal: number;
 
-   @FieldType.checkbox
-   shipperintegrated: boolean
+	@FieldType.currency
+	shippingbyweightamount: number;
 
-   @FieldType.percent
-   shippingaspercentageoftotal: number
+	@FieldType.float
+	shippingbyweightperquantity: number;
 
-   @FieldType.currency
-   shippingbyweightamount: number
+	@FieldType.select
+	shippingbyweightperunit: number;
 
-   @FieldType.float
-   shippingbyweightperquantity: number
+	@FieldType.freeformtext
+	shippingcarrier: string;
 
-   @FieldType.select
-   shippingbyweightperunit: number
+	@FieldType.currency
+	shippingflatrateamount: number;
 
-   @FieldType.freeformtext
-   shippingcarrier: string
+	@FieldType.currency
+	shippingperitemamount: number;
 
-   @FieldType.currency
-   shippingflatrateamount: number
+	@FieldType.select
+	shippingtablechargeby: number;
 
-   @FieldType.currency
-   shippingperitemamount: number
+	@FieldType.select
+	shippingtableuom: number;
 
-   @FieldType.select
-   shippingtablechargeby: number
+	@FieldType.select
+	shippingtaxcode: number;
 
-   @FieldType.select
-   shippingtableuom: number
+	@FieldType.select
+	site: number;
 
-   @FieldType.select
-   shippingtaxcode: number
+	@FieldType.select
+	states: number;
 
-   @FieldType.select
-   site: number
+	@FieldType.select
+	subsidiary: number;
 
-   @FieldType.select
-   states: number
+	@FieldType.freeformtext
+	tabtext: string;
 
-   @FieldType.select
-   subsidiary: number
+	@FieldType.select
+	taxschedule: number;
 
-   @FieldType.freeformtext
-   tabtext: string
+	@FieldType.select
+	taxschedulehandling: number;
 
-   @FieldType.select
-   taxschedule: number
+	@FieldType.float
+	upsdiscountrate: number;
 
-   @FieldType.select
-   taxschedulehandling: number
+	@FieldType.freeformtext
+	upssavername: string;
 
-   @FieldType.float
-   upsdiscountrate: number
+	@FieldType.select
+	upsservicecode: number;
 
-   @FieldType.freeformtext
-   upssavername: string
+	@FieldType.float
+	uspsdiscountrate: number;
 
-   @FieldType.select
-   upsservicecode: number
-
-   @FieldType.float
-   uspsdiscountrate: number
-
-   @FieldType.select
-   uspsservicecode: number
-
+	@FieldType.select
+	uspsservicecode: number;
 }

@@ -1,5 +1,5 @@
-import { NetsuiteCurrentRecord } from '../Record';
 import * as LogManager from '../../EC_Logger';
+import type { NetsuiteCurrentRecord } from '../Record';
 
 const log = LogManager.getLogger('DataAccess.Record');
 
@@ -7,9 +7,9 @@ const log = LogManager.getLogger('DataAccess.Record');
  * Helper decorator to define a join relationship to another record type.
  * Example usage:
  * @FieldType.join('entity', Customer) customer: Customer
- * 
- * @param fieldId 
- * @param classReference 
+ *
+ * @param fieldId
+ * @param classReference
  * @returns NCurrentRecord
  */
 export function JoinDescriptor<T extends NetsuiteCurrentRecord>(fieldId: string, classReference: any) {
