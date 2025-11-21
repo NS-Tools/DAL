@@ -1,4 +1,4 @@
-import { EstimateBase } from '../DataAccess/EstimateBase';
+import { EstimateBase } from '../DataAccess/BaseRecords/EstimateBase';
 import { Sublist } from '../DataAccess/Sublist';
 
 describe('extimate', () => {

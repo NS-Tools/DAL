@@ -4,9 +4,9 @@
 
 import * as _ from 'lodash';
 import * as mockrecord from '../__mocks__/N/record';
-import * as cust from '../DataAccess/CustomerBase';
-import { SalesOrderBase } from '../DataAccess/SalesOrderBase';
-import { TransactionBase } from '../DataAccess/Transaction';
+import * as cust from '../DataAccess/BaseRecords/CustomerBase';
+import { SalesOrderBase } from '../DataAccess/BaseRecords/SalesOrderBase';
+import { TransactionBase } from '../DataAccess/BaseRecords/Transaction';
 
 describe('instantiation', () => {
 	test('new record from scratch', () => {

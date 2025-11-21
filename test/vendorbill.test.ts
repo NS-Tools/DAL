@@ -1,5 +1,5 @@
 import { Sublist } from '../DataAccess/Sublist';
-import { VendorBillBase } from '../DataAccess/VendorBillBase';
+import { VendorBillBase } from '../DataAccess/BaseRecords/VendorBillBase';
 
 describe('vendor bill', () => {
 	test('sublists exist', () => {
