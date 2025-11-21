@@ -1,4 +1,4 @@
-NS-Tools/DAL is a fork of expertconsulting/netsuite-fasttrack-toolkit-ss2.
+NS-Tools/DAL is a fork of exploreconsulting/netsuite-fasttrack-toolkit-ss2.
 
 Original project license is MIT based on the project.json license grant, and issue#4 under the original repository (https://web.archive.org/web/20201019155508/https://github.com/ExploreConsulting/netsuite-fasttrack-toolkit-ss2/issues/4)
 

@@ -328,4 +328,23 @@ describe('Sublists', function () {
          expect(record.setCurrentSublistValue).toHaveBeenCalled()
       })
    })
+
+   describe('Sublist iteration', function() {
+      test('iterate over sublist lines', function() {
+         const fakeRec = record.create({ type: 'fake', isDynamic: false });
+         fakeRec.getLineCount.mockImplementation(() => 3);
+         fakeRec.fakesublist = new Sublist(SublistLineWithTextField, fakeRec, 'fakesublist');
+         fakeRec.fakesublist[1] = new SublistLineWithTextField('fakesublist', fakeRec, 1);
+         fakeRec.fakesublist[2] = new SublistLineWithTextField('fakesublist', fakeRec, 2);
+         fakeRec.fakesublist[3] = new SublistLineWithTextField('fakesublist', fakeRec, 3);
+
+         let index = 0;
+         for (const line of fakeRec.fakesublist) {
+            index++;
+            expect(line).toBeInstanceOf(SublistLineWithTextField);
+            console.log(`Iterated to line ${index}`);
+            console.log(line);
+         }
+      });
+   });
 })

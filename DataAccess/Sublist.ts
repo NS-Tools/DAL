@@ -10,6 +10,7 @@ import * as format from 'N/format'
 import * as LogManager from '../EC_Logger'
 import * as error from 'N/error'
 import { defaultDescriptor, NetsuiteCurrentRecord } from './Record'
+/// <reference lib="es2015.symbol" />
 
 const log = LogManager.getLogger('nsdal-sublist')
 
@@ -208,8 +209,7 @@ function parseProp (propertyKey: string): [boolean, string] {
 /**
  * creates a sublist whose lines are of type T
  */
-export class Sublist<out T extends SublistLine> {
-
+export class Sublist<out T extends SublistLine> implements Iterator<T> {
    nsrecord: record.Record
 
    /**
@@ -399,6 +399,26 @@ export class Sublist<out T extends SublistLine> {
       return Object.keys(this).filter(k => !isNaN(+k)).map(key => this[key])
    }
 
+   // iterator state to ensure we only iterate 
+   private iteratorIndex = 0;
+
+   /**
+    * Iterator implementation to allow for-of loops in sublists. You should be able to do `for (const line of mySublist) { ... }` now instead of 
+    * `for (let i=0; i < mySublist.length; i++) { const line = mySublist[i]; ... }`
+    * @returns Iterator<T>
+    */
+   next(): IteratorResult<T> {
+      if (this.iteratorIndex < this.length) {
+         return { done: false, value: this[this.iteratorIndex++] };
+      } else {
+         this.iteratorIndex = 0; // reset for next iteration
+         return { done: true, value: null };
+      }
+   }
+
+   [Symbol.iterator](): Iterator<T> {
+      return this;
+   }
 }
 
 /**
