@@ -21,9 +21,9 @@ cp -R $WORKSPACE_PATH/node_modules/node-sql-parser/umd/transactsql.umd.d.ts $WOR
 sed -i -e 's/\.\.\/types/\.\/types/g' $WORKSPACE_PATH/thirdparty/transactsql/transactsql.umd.d.ts
 
 # Build the project
-npm run build;
+npx tsc -p tsconfig.json
 
-# Copy to build.
+# Copy third party files to dist
 mkdir -p $WORKSPACE_PATH/dist/js/thirdparty/{aurelia-logging,transactsql}/
 mkdir -p $WORKSPACE_PATH/dist/declarations/thirdparty/{aurelia-logging,transactsql}/
 
@@ -32,3 +32,4 @@ cp -R $WORKSPACE_PATH/thirdparty/aurelia-logging/*.d.ts $WORKSPACE_PATH/dist/dec
 
 cp -R $WORKSPACE_PATH/thirdparty/transactsql/*.js $WORKSPACE_PATH/dist/js/thirdparty/transactsql/
 cp -R $WORKSPACE_PATH/thirdparty/transactsql/*.d.ts $WORKSPACE_PATH/dist/declarations/thirdparty/transactsql/
+
